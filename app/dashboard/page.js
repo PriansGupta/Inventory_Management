@@ -6,10 +6,12 @@ import { useRouter } from "next/navigation";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import SimpleBackdrop from "@/Components/Backdrop";
 
 function dashboard() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
@@ -28,12 +30,7 @@ function dashboard() {
     },
   });
 
-  if (loading)
-    return (
-      <div className="w-1/2 h-1/2 mx-auto my-auto">
-        <Skeleton count={10}></Skeleton>;
-      </div>
-    );
+  if (loading) return <SimpleBackdrop open={loading}></SimpleBackdrop>;
   else
     return (
       <ThemeProvider theme={darkTheme}>
