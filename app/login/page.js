@@ -19,7 +19,7 @@ export default function Login() {
       route.push("/dashboard");
     }
   }, []);
-  
+
   const handleLogin = async () => {
     setLoading(true);
     try {
@@ -72,10 +72,14 @@ export default function Login() {
           onChange={(e) => setBranch(e.target.value)}
         >
           <option value="Select message Branch">Select Department</option>
-          <option value="Coupons">Electronics Engineering</option>
-          <option value="Receipts">Computer Science Engineering</option>
-          <option value="Do Good Rewards">Chemical Engineering</option>
-          <option value="Troubleshooting">Civil Engineering</option>
+          <option value="Electronics Engineering">
+            Electronics Engineering
+          </option>
+          <option value="Computer Science Engineering">
+            Computer Science Engineering
+          </option>
+          <option value="Chemical Engineering">Chemical Engineering</option>
+          <option value="Civil Engineering">Civil Engineering</option>
           <option value="Other">Other</option>
         </select>
         <button
