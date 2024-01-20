@@ -3,11 +3,14 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import SimpleBackdrop from "@/Components/Backdrop";
+import Link from "next/link";
 
 export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setLoading] = useState(false);
+  const [Branch, setBranch] = useState("");
+
   const route = useRouter();
 
   useEffect(() => {
@@ -16,24 +19,27 @@ export default function Login() {
       route.push("/dashboard");
     }
   }, []);
+  
   const handleLogin = async () => {
     setLoading(true);
     try {
       const response = await axios.post("http://localhost:5000/api/login", {
         username,
         password,
+        Branch,
       });
       const { token } = response.data;
       localStorage.setItem("token", token);
       console.log("Token:", token);
       route.push("/dashboard");
+      setLoading(false);
     } catch (error) {
       console.error(
         "Login failed:",
         error.response ? error.response.data.error : error.message
       );
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (
@@ -52,19 +58,37 @@ export default function Login() {
         </div>
         <div className="mb-4">
           <input
-            type="password"
+            type="text"
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             className="w-full px-4 py-2 border rounded"
           />
         </div>
+        <select
+          id="Branch"
+          className="dropdown"
+          value={Branch}
+          onChange={(e) => setBranch(e.target.value)}
+        >
+          <option value="Select message Branch">Select Department</option>
+          <option value="Coupons">Electronics Engineering</option>
+          <option value="Receipts">Computer Science Engineering</option>
+          <option value="Do Good Rewards">Chemical Engineering</option>
+          <option value="Troubleshooting">Civil Engineering</option>
+          <option value="Other">Other</option>
+        </select>
         <button
           onClick={handleLogin}
           className="w-full px-4 py-2 bg-blue-500 text-white rounded"
         >
           Login
         </button>
+        <div className="mt-4 text-center">
+          <Link className="text-blue-500" href="/forgot-password">
+            Forgot Password?
+          </Link>
+        </div>
       </div>
     </div>
   );

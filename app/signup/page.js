@@ -1,10 +1,11 @@
-"use client"
+"use client";
 import { useState } from "react";
 import axios from "axios";
 
 const Register = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [Branch, setBranch] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const handleRegister = async () => {
@@ -17,6 +18,7 @@ const Register = () => {
       const response = await axios.post("http://localhost:5000/api/register", {
         username,
         password,
+        Branch,
       });
 
       console.log("Registration successful:", response.data);
@@ -81,6 +83,23 @@ const Register = () => {
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
         </div>
+        <select
+          id="Branch"
+          className="dropdown"
+          value={Branch}
+          onChange={(e) => setBranch(e.target.value)}
+        >
+          <option value="Select message Branch">Select Department</option>
+          <option value="Electronics Engineering">
+            Electronics Engineering
+          </option>
+          <option value="Computer Science Engineering">
+            Computer Science Engineering
+          </option>
+          <option value="Chemical Engineering">Chemical Engineering</option>
+          <option value="Civil Engineering">Civil Engineering</option>
+          <option value="Other">Other</option>
+        </select>
         <div className="flex items-center justify-between">
           <button
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
