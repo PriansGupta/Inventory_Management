@@ -55,7 +55,7 @@ app.post("/api/register", async (req, res) => {
 
     const user = new User({
       username,
-      password:hashedPassword,
+      password: hashedPassword,
       Branch,
     });
     await user.save();
@@ -77,13 +77,18 @@ app.post("/api/login", async (req, res) => {
       const token = jwt.sign({ userId: user._id }, "your-secret-key", {
         expiresIn: "1h",
       });
-      res.status(200).json({ token });
+      res.status(200).json({ token, message: "Logged in Successfully" });
     } else {
-      res.status(401).json({ error: "Invalid credentials" });
+      res
+        .status(401)
+        .json({ error: "Invalid credentials", message: "User Not Found" });
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({
+      error: "Internal Server Error",
+      message: "Internal Server Error",
+    });
   }
 });
 

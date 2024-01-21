@@ -7,6 +7,9 @@ import Link from "next/link";
 import Image from "next/image";
 import HBTUlogo from "../assets/HBTUlogo.png";
 import HbtuImage from "../assets/HbtuImage.jpg";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const branchArray = [
   { name: "Electronics Engineering" },
   { name: "Computer Science" },
@@ -19,8 +22,7 @@ const branchArray = [
   { name: "Bio Chemical Engineering" },
   { name: "Oil Technology" },
   { name: "Leather Technology" },
-  { name: "Food Technology" }
-  
+  { name: "Food Technology" },
 ];
 
 export default function Login() {
@@ -46,12 +48,32 @@ export default function Login() {
         password,
         Branch,
       });
+      toast.success(response.data.message, {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
       const { token } = response.data;
       localStorage.setItem("token", token);
       console.log("Token:", token);
       route.push("/dashboard");
       setLoading(false);
     } catch (error) {
+      toast.error(error.response.data.message, {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
       console.error(
         "Login failed:",
         error.response ? error.response.data.error : error.message
@@ -65,14 +87,14 @@ export default function Login() {
       <SimpleBackdrop open={isLoading}></SimpleBackdrop>
       <div className=" flex ">
         <div className="w-1/2">
-          <Image className="" src={HbtuImage}></Image>
+          <Image className="h-[100vh]" src={HbtuImage}></Image>
         </div>
         <div className="w-1/2 p-8" style={{}}>
           <div className="flex  justify-center ">
             <Image className="ml-6 mt-2" src={HBTUlogo} width="100"></Image>
           </div>
           <h1 className=" mb-6 text-center text-xl">
-            Inventory Management Login
+            HBTU Inventory Management
           </h1>
           <div className="mb-4 px-32">
             <input
@@ -96,10 +118,10 @@ export default function Login() {
             <select
               id="Branch"
               style={{
-                paddingTop:"4px",
-                paddingBottom:"4px"
+                paddingTop: "4px",
+                paddingBottom: "4px",
               }}
-              className="dropdown"
+              className="dropdown cursor-pointer"
               value={Branch}
               onChange={(e) => setBranch(e.target.value)}
             >
@@ -132,6 +154,13 @@ export default function Login() {
           </div>
         </div>
       </div>
+      <ToastContainer>
+        position="bottom-right" autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick rtl={false}
+        pauseOnFocusLoss draggable pauseOnHover theme="light" transition:Bounce
+      </ToastContainer>
     </div>
   );
 }
