@@ -3,7 +3,8 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const cors = require("cors");
-const { redirect } = require("next/dist/server/api-utils");
+const nodemailer = require("nodemailer");
+// const randomize = require("randomatic");
 
 const app = express();
 const PORT = 5000;
@@ -29,15 +30,34 @@ app.use(express.json());
 const User = mongoose.model("User", {
   username: String,
   password: String,
+  Branch: String,
 });
+
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: "priyanshg.jobs@gmail.com",
+    pass: "edsj elqa tbyd ffto",
+  },
+});
+
+const generateOTP = () => {
+  const otp = Math.floor(100000 + Math.random() * 900000);
+  return otp.toString();
+};
+const otpStore = {};
 
 app.post("/api/register", async (req, res) => {
   try {
-    const { username, password } = req.body;
+    const { username, password, Branch } = req.body;
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const user = new User({ username, password: hashedPassword });
+    const user = new User({
+      username,
+      password:hashedPassword,
+      Branch,
+    });
     await user.save();
 
     res.status(201).json({ message: "User registered successfully" });
@@ -60,6 +80,88 @@ app.post("/api/login", async (req, res) => {
       res.status(200).json({ token });
     } else {
       res.status(401).json({ error: "Invalid credentials" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+const users = {};
+
+app.post("/api/send-otp", async (req, res) => {
+  const { email } = req.body;
+
+  if (!email) {
+    return res.status(400).json({ error: "Email is required" });
+  }
+
+  const otp = generateOTP();
+
+  const mailOptions = {
+    from: "priyanshg.jobs@gmail.com", // Your Gmail email address
+    to: email,
+    subject: "OTP Verification",
+    text: `Your OTP is: ${otp}`,
+  };
+
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      return res.status(500).json({ error: "Failed to send OTP" });
+    }
+
+    users[email] = { otp, timestamp: Date.now() };
+
+    res.json({ message: "OTP sent successfully" });
+  });
+});
+
+app.post("/api/verify-otp", async (req, res) => {
+  const { email, otp, password } = req.body;
+
+  if (!email || !otp) {
+    return res.status(400).json({ error: "Email and OTP are required" });
+  }
+
+  const user = users[email];
+
+  if (!user || user.otp !== otp) {
+    return res.status(401).json({ error: "Invalid OTP" });
+  }
+
+  const timeElapsed = Date.now() - user.timestamp;
+
+  if (timeElapsed > 5 * 60 * 1000) {
+    // OTP expires after 5 minutes
+    return res.status(401).json({ error: "OTP has expired" });
+  }
+  try {
+    const user = await User.findOne({ username: email });
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    const hashedPassword = await bcrypt.hash(password, 10);
+    user.password = hashedPassword;
+    await user.save();
+
+    return res.json({ message: "Password changed successfully" });
+  } catch (error) {
+    console.error("Error changing password:", error);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+  res.json({ message: "OTP verified successfully" });
+});
+
+app.post("/api/check-email", async (req, res) => {
+  try {
+    const { email } = req.body;
+    const user = await User.findOne({ username: email });
+
+    if (user) {
+      res.status(200).json({ exists: true, user });
+    } else {
+      res.status(200).json({ exists: false });
     }
   } catch (error) {
     console.error(error);
