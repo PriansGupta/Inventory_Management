@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import SimpleBackdrop from "@/Components/Backdrop";
 import { useRouter } from "next/navigation";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const ResetPassword = () => {
   //   console.log(JSON.parse(localStorage.getItem("user")).username);
@@ -50,6 +52,16 @@ const ResetPassword = () => {
 
   useEffect(() => {
     if (email) {
+      toast.success("OTP sent Successfully", {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
       setLoading(false);
     } else {
       router.push("/login");
@@ -99,6 +111,14 @@ const ResetPassword = () => {
             Update Password
           </button>
         </div>
+        <ToastContainer>
+          position="bottom-right" autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick rtl={false}
+          pauseOnFocusLoss draggable pauseOnHover theme="light"
+          transition:Bounce
+        </ToastContainer>
       </div>
     );
 };

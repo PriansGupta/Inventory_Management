@@ -32,7 +32,16 @@ export default function Login() {
   const [Branch, setBranch] = useState("");
 
   const route = useRouter();
-
+  // toast.success("fedeeded", {
+  //   position: "bottom-right",
+  //   autoClose: 5000,
+  //   hideProgressBar: false,
+  //   closeOnClick: true,
+  //   pauseOnHover: true,
+  //   draggable: true,
+  //   progress: undefined,
+  //   theme: "colored",
+  // });
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -48,6 +57,9 @@ export default function Login() {
         password,
         Branch,
       });
+      const { token } = response.data;
+      localStorage.setItem("token", token);
+      console.log("Token:", token);
       toast.success(response.data.message, {
         position: "bottom-right",
         autoClose: 5000,
@@ -58,9 +70,6 @@ export default function Login() {
         progress: undefined,
         theme: "colored",
       });
-      const { token } = response.data;
-      localStorage.setItem("token", token);
-      console.log("Token:", token);
       route.push("/dashboard");
       setLoading(false);
     } catch (error) {
@@ -74,11 +83,11 @@ export default function Login() {
         progress: undefined,
         theme: "colored",
       });
+      setLoading(false);
       console.error(
         "Login failed:",
         error.response ? error.response.data.error : error.message
       );
-      setLoading(false);
     }
   };
 
@@ -128,14 +137,12 @@ export default function Login() {
               <option value="Select message Branch">Select Department</option>
 
               {branchArray?.map((item, idx) => {
-                return <option value={item.name}>{item.name}</option>;
+                return (
+                  <option key={item.name} value={item.name}>
+                    {item.name}
+                  </option>
+                );
               })}
-
-              {/* {array_name?.map((item, idx) => {
-              return (
-                <option value={item.branch_name_key}>{Branch_name_key}</option>
-              );
-            })} */}
             </select>
           </div>
           <div className="px-32">
