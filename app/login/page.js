@@ -65,7 +65,7 @@ export default function Login() {
       <SimpleBackdrop open={isLoading}></SimpleBackdrop>
       <div className=" flex ">
         <div className="w-1/2">
-          <Image className="" src={HbtuImage}></Image>
+          <Image className="h-[100vh]" src={HbtuImage}></Image>
         </div>
         <div className="w-1/2 p-8" style={{}}>
           <div className="flex  justify-center ">
