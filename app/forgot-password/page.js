@@ -5,7 +5,7 @@ import SimpleBackdrop from "@/Components/Backdrop";
 import { useRouter } from "next/navigation";
 
 const ForgotPassword = () => {
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState("priyanshg615@gmail.com");
   const [emailExists, setEmailExists] = useState(null);
   const [isLoading, setLoading] = useState(false);
   const router = useRouter();
@@ -19,13 +19,25 @@ const ForgotPassword = () => {
           email,
         }
       );
-      const { exists } = response.data;
+      const { exists, user } = response.data;
       setEmailExists(exists);
-      console.log(exists);
+      //   console.log(exists, user);
       if (exists) {
-        localStorage.setItem("email", email);
-        router.push("/reset");
-        console.log("User found");
+        // localStorage.setItem("email", email);
+        localStorage.setItem("user", JSON.stringify(user));
+        try {
+          const response = await axios.post(
+            "http://localhost:5000/api/send-otp",
+            {
+              email: JSON.parse(localStorage.getItem("user"))?.username,
+            }
+          );
+          if (response) console.log(response);
+          router.push("/reset");
+        } catch (error) {
+          console.error(error);
+        }
+        // console.log("User found");
       } else {
         console.log("User not found");
       }
@@ -57,7 +69,7 @@ const ForgotPassword = () => {
           onClick={Reset}
           className="w-full px-4 py-2 bg-blue-500 text-white rounded"
         >
-          Reset Password
+          Verify Email
         </button>
       </div>
     </div>
