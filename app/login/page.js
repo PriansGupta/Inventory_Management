@@ -9,6 +9,8 @@ import HBTUlogo from "../assets/HBTUlogo.png";
 import HbtuImage from "../assets/HbtuImage.jpg";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
 const branchArray = [
   { name: "Electronics Engineering" },
@@ -30,6 +32,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [isLoading, setLoading] = useState(false);
   const [Branch, setBranch] = useState("");
+  const [visible, setVisible] = useState(false);
 
   const route = useRouter();
   // toast.success("fedeeded", {
@@ -116,12 +119,23 @@ export default function Login() {
           </div>
           <div className="mb-4 px-32">
             <input
-              type="text"
+              type={visible ? "text" : "password"}
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="w-full px-4 py-2 border rounded-lg"
             />
+            <div className="cursor-pointer">
+              {!visible ? (
+                <RemoveRedEyeIcon
+                  onClick={() => setVisible(!visible)}
+                ></RemoveRedEyeIcon>
+              ) : (
+                <VisibilityOffIcon
+                  onClick={() => setVisible(!visible)}
+                ></VisibilityOffIcon>
+              )}
+            </div>
           </div>
           <div className="px-32 mb-4 ">
             <select

@@ -3,6 +3,8 @@ import { useState } from "react";
 import axios from "axios";
 import SimpleBackdrop from "@/Components/Backdrop";
 import { useRouter } from "next/navigation";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("priyanshg615@gmail.com");
@@ -33,12 +35,32 @@ const ForgotPassword = () => {
             }
           );
           if (response) console.log(response);
+          toast.success(response.data.message, {
+            position: "bottom-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
           router.push("/reset");
         } catch (error) {
           console.error(error);
         }
         // console.log("User found");
       } else {
+        toast.error("User not found", {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
         console.log("User not found");
       }
     } catch (error) {
@@ -72,6 +94,13 @@ const ForgotPassword = () => {
           Verify Email
         </button>
       </div>
+      <ToastContainer>
+        position="bottom-right" autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick rtl={false}
+        pauseOnFocusLoss draggable pauseOnHover theme="light" transition:Bounce
+      </ToastContainer>
     </div>
   );
 };
