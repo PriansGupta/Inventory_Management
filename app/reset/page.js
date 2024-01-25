@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import SimpleBackdrop from "@/Components/Backdrop";
 import { useRouter } from "next/navigation";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const ResetPassword = () => {
   //   console.log(JSON.parse(localStorage.getItem("user")).username);
@@ -11,6 +13,7 @@ const ResetPassword = () => {
   );
   const [otp, setOTP] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [isLoading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
   const router = useRouter();
@@ -30,6 +33,14 @@ const ResetPassword = () => {
   }
 
   const handleVerifyOtp = async () => {
+    if (
+      password != confirmPassword ||
+      password.length === 0 ||
+      confirmPassword.length === 0
+    ) {
+      return 0;
+    }
+    setLoading(true);
     try {
       const response = await axios.post(
         "http://localhost:5000/api/verify-otp",
@@ -40,16 +51,31 @@ const ResetPassword = () => {
         }
       );
       console.log(response.data.message);
-      setMessage(response.data.message);
+      setMessage(
+        <p className="font-semibold text-green-500">{response.data.message}</p>
+      );
       router.push("/login");
     } catch (error) {
       console.error("Error verifying OTP:", error);
-      setMessage("Error verifying OTP");
+      setMessage(
+        <p className="font-semibold text-red-500">Error verifying OTP</p>
+      );
     }
+    setLoading(false);
   };
 
   useEffect(() => {
     if (email) {
+      toast.success("OTP sent Successfully", {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
       setLoading(false);
     } else {
       router.push("/login");
@@ -76,15 +102,26 @@ const ResetPassword = () => {
             <input
               type="text"
               placeholder="Enter New Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               className="w-full px-4 py-2 border rounded mt-2"
             />
             <input
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
               type="password"
               placeholder="Confirm new Password"
-              className="w-full px-4 py-2 border rounded mt-2"
+              className={`w-full px-4 py-2 border rounded mt-2 ${
+                password != confirmPassword ? "border-2 border-red-600" : ""
+              }`}
             />
+            {password != confirmPassword ? (
+              <p className="text-red-600 font-semibold">
+                Password does not match
+              </p>
+            ) : (
+              ""
+            )}
           </div>
           <button
             onClick={handleSendOTP}
@@ -92,13 +129,35 @@ const ResetPassword = () => {
           >
             Resend OTP
           </button>
-          <button
-            onClick={handleVerifyOtp}
-            className="w-full px-4 py-2 bg-blue-500 text-white rounded"
-          >
-            Update Password
-          </button>
+          {message}
+          {password != confirmPassword ||
+          password.length == 0 ||
+          confirmPassword == 0 ||
+          otp.length != 6 ? (
+            <button
+              disabled
+              onClick={handleVerifyOtp}
+              className={`w-full px-4 py-2 bg-blue-300 text-white rounded`}
+            >
+              Update Password
+            </button>
+          ) : (
+            <button
+              onClick={handleVerifyOtp}
+              className={`w-full px-4 py-2 bg-blue-500 text-white rounded`}
+            >
+              Update Password
+            </button>
+          )}
         </div>
+        <ToastContainer>
+          position="bottom-right" autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick rtl={false}
+          pauseOnFocusLoss draggable pauseOnHover theme="light"
+          transition:Bounce
+        </ToastContainer>
       </div>
     );
 };
