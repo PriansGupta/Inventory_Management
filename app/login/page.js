@@ -5,8 +5,8 @@ import { useRouter } from "next/navigation";
 import SimpleBackdrop from "@/Components/Backdrop";
 import Link from "next/link";
 import Image from "next/image";
-import HBTUlogo from "../assets/HBTUlogo.png";
-import HbtuImage from "../assets/HbtuImage.jpg";
+import HBTUlogo from "@/Assets/HBTUlogo.png";
+import HbtuImage from "@/Assets/hbtuImage.jpg"
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
