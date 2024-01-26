@@ -6,7 +6,7 @@ import SimpleBackdrop from "@/Components/Backdrop";
 import Link from "next/link";
 import Image from "next/image";
 import HBTUlogo from "@/Assets/HBTUlogo.png";
-import HbtuImage from "@/Assets/hbtuImage.jpg"
+import HbtuImage from "@/Assets/hbtuImage.jpg";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
@@ -30,21 +30,12 @@ const branchArray = [
 export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [isLoading, setLoading] = useState(false);
   const [Branch, setBranch] = useState("");
+  const [isLoading, setLoading] = useState(false);
   const [visible, setVisible] = useState(false);
+  const [error, setError] = useState(true);
 
   const route = useRouter();
-  // toast.success("fedeeded", {
-  //   position: "bottom-right",
-  //   autoClose: 5000,
-  //   hideProgressBar: false,
-  //   closeOnClick: true,
-  //   pauseOnHover: true,
-  //   draggable: true,
-  //   progress: undefined,
-  //   theme: "colored",
-  // });
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -94,10 +85,16 @@ export default function Login() {
     }
   };
 
+  useEffect(() => {
+    if (Branch.length != 0 && username.length != 0 && password.length != 0)
+      setError(false);
+    else setError(true);
+  }, [Branch, username, password]);
+
   return (
     <div>
       <SimpleBackdrop open={isLoading}></SimpleBackdrop>
-      <div className=" flex ">
+      <div className=" flex select-none">
         <div className="w-1/2">
           <Image className="h-[100vh]" src={HbtuImage}></Image>
         </div>
@@ -110,6 +107,7 @@ export default function Login() {
           </h1>
           <div className="mb-4 px-32">
             <input
+              required
               type="text"
               placeholder="Username"
               value={username}
@@ -117,15 +115,16 @@ export default function Login() {
               className="w-full px-4 py-2 border rounded-lg"
             />
           </div>
-          <div className="mb-4 px-32">
+          <div className="mb-4 px-32 relative">
             <input
+              required
               type={visible ? "text" : "password"}
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="w-full px-4 py-2 border rounded-lg"
             />
-            <div className="cursor-pointer">
+            <span className="cursor-pointer absolute top-2 right-[9rem]">
               {!visible ? (
                 <RemoveRedEyeIcon
                   onClick={() => setVisible(!visible)}
@@ -135,10 +134,11 @@ export default function Login() {
                   onClick={() => setVisible(!visible)}
                 ></VisibilityOffIcon>
               )}
-            </div>
+            </span>
           </div>
           <div className="px-32 mb-4 ">
             <select
+              required
               id="Branch"
               style={{
                 paddingTop: "4px",
@@ -148,8 +148,9 @@ export default function Login() {
               value={Branch}
               onChange={(e) => setBranch(e.target.value)}
             >
-              <option value="Select message Branch">Select Department</option>
-
+              <option value="" disabled>
+                Select Department
+              </option>
               {branchArray?.map((item, idx) => {
                 return (
                   <option key={item.name} value={item.name}>
@@ -160,12 +161,22 @@ export default function Login() {
             </select>
           </div>
           <div className="px-32">
-            <button
-              onClick={handleLogin}
-              className="w-full px-4 py-2 bg-blue-500 text-white rounded"
-            >
-              Login
-            </button>
+            {error ? (
+              <button
+                disabled
+                onClick={handleLogin}
+                className="w-full px-4 py-2 bg-blue-300 text-white rounded"
+              >
+                Login
+              </button>
+            ) : (
+              <button
+                onClick={handleLogin}
+                className="w-full px-4 py-2 bg-blue-500 text-white rounded"
+              >
+                Login
+              </button>
+            )}
           </div>
 
           <div className="mt-4 text-center">
