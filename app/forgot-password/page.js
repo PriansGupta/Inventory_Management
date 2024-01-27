@@ -1,17 +1,29 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import SimpleBackdrop from "@/Components/Backdrop";
 import { useRouter } from "next/navigation";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import CircularProgress from "@mui/material/CircularProgress";
+import Box from "@mui/material/Box";
 
 const ForgotPassword = () => {
-  const [email, setEmail] = useState("priyanshg615@gmail.com");
+  const [email, setEmail] = useState("");
   const [emailExists, setEmailExists] = useState(null);
-  const [isLoading, setLoading] = useState(false);
+  const [isValidEmail, setIsValidEmail] = useState(true);
+
+  const validateEmail = (input) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(input);
+  };
+
+  const [isLoading, setLoading] = useState(true);
   const router = useRouter();
 
+  useEffect(() => {
+    setLoading(false);
+  });
   async function Reset() {
     setLoading(true);
     try {
@@ -23,9 +35,7 @@ const ForgotPassword = () => {
       );
       const { exists, user } = response.data;
       setEmailExists(exists);
-      //   console.log(exists, user);
       if (exists) {
-        // localStorage.setItem("email", email);
         localStorage.setItem("user", JSON.stringify(user));
         try {
           const response = await axios.post(
@@ -72,7 +82,7 @@ const ForgotPassword = () => {
   return (
     <div>
       <SimpleBackdrop open={isLoading}></SimpleBackdrop>
-      <div className="container mx-auto p-8 max-w-md">
+      <div className="container mx-auto p-8 max-w-md select-none">
         <h1 className="text-3xl mb-6 text-center">Forgot Password</h1>
         <p className="mb-4 text-center">
           Enter your email address below, and we'll send you an OTP to verify
@@ -81,18 +91,40 @@ const ForgotPassword = () => {
         <div className="mb-4">
           <input
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              setIsValidEmail(validateEmail(email));
+            }}
             type="email"
             placeholder="Email Address"
             className="w-full px-4 py-2 border rounded"
           />
+          {!isValidEmail ? (
+            <p className="text-red-500 tracking-wide font-mono">
+              Enter a valid email
+            </p>
+          ) : (
+            ""
+          )}
         </div>
-        <button
-          onClick={Reset}
-          className="w-full px-4 py-2 bg-blue-500 text-white rounded"
-        >
-          Verify Email
-        </button>
+        {isLoading ? (
+          <CircularProgress />
+        ) : email.length ? (
+          <button
+            onClick={Reset}
+            className="w-full px-4 py-2 bg-blue-500 text-white rounded"
+          >
+            Verify Email
+          </button>
+        ) : (
+          <button
+            disabled
+            onClick={Reset}
+            className="w-full px-4 py-2 bg-blue-300 text-white rounded"
+          >
+            Verify Email
+          </button>
+        )}
       </div>
       <ToastContainer>
         position="bottom-right" autoClose={5000}

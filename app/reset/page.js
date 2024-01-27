@@ -52,13 +52,17 @@ const ResetPassword = () => {
       );
       console.log(response.data.message);
       setMessage(
-        <p className="font-semibold text-green-500">{response.data.message}</p>
+        <p className="tracking-wide font-mono text-green-500">
+          {response.data.message}
+        </p>
       );
       router.push("/login");
     } catch (error) {
       console.error("Error verifying OTP:", error);
       setMessage(
-        <p className="font-semibold text-red-500">Error verifying OTP</p>
+        <p className="tracking-wide font-mono text-red-500">
+          Error verifying OTP
+        </p>
       );
     }
     setLoading(false);
@@ -87,7 +91,7 @@ const ResetPassword = () => {
     return (
       <div>
         <SimpleBackdrop open={isLoading}></SimpleBackdrop>
-        <div className="container mx-auto p-8 max-w-md">
+        <div className="container mx-auto p-8 max-w-md select-none">
           <h1 className="text-3xl mb-6 text-center">Reset Password</h1>
           <p className="mb-4 text-center">Enter the new Password</p>
           <div className="mb-4">
@@ -116,7 +120,7 @@ const ResetPassword = () => {
               }`}
             />
             {password != confirmPassword ? (
-              <p className="text-red-600 font-semibold">
+              <p className="text-red-500 tracking-wide font-mono">
                 Password does not match
               </p>
             ) : (

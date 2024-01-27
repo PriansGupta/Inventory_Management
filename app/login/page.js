@@ -6,7 +6,7 @@ import SimpleBackdrop from "@/Components/Backdrop";
 import Link from "next/link";
 import Image from "next/image";
 import HBTUlogo from "@/Assets/HBTUlogo.png";
-import HbtuImage from "@/Assets/hbtuImage.jpg"
+import HbtuImage from "@/Assets/hbtuImage.jpg";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
@@ -28,23 +28,15 @@ const branchArray = [
 ];
 
 export default function Login() {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isLoading, setLoading] = useState(false);
   const [Branch, setBranch] = useState("");
+  const [isLoading, setLoading] = useState(false);
   const [visible, setVisible] = useState(false);
+  const [error, setError] = useState(true);
+  const [isValidEmail, setIsValidEmail] = useState(true);
 
   const route = useRouter();
-  // toast.success("fedeeded", {
-  //   position: "bottom-right",
-  //   autoClose: 5000,
-  //   hideProgressBar: false,
-  //   closeOnClick: true,
-  //   pauseOnHover: true,
-  //   draggable: true,
-  //   progress: undefined,
-  //   theme: "colored",
-  // });
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -52,11 +44,16 @@ export default function Login() {
     }
   }, []);
 
+  const validateEmail = (input) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(input);
+  };
+
   const handleLogin = async () => {
     setLoading(true);
     try {
       const response = await axios.post("http://localhost:5000/api/login", {
-        username,
+        email,
         password,
         Branch,
       });
@@ -94,38 +91,65 @@ export default function Login() {
     }
   };
 
+  useEffect(() => {
+    if (Branch.length != 0 && email.length != 0 && password.length != 0)
+      setError(false);
+    else setError(true);
+  }, [Branch, email, password]);
+
   return (
     <div>
       <SimpleBackdrop open={isLoading}></SimpleBackdrop>
-      <div className=" flex ">
+      <div className=" flex select-none">
         <div className="w-1/2">
-          <Image className="h-[100vh]" src={HbtuImage}></Image>
+          <Image
+            className="h-[100vh] relative"
+            src={HbtuImage}
+            alt="HBTU"
+          ></Image>
+          <h1 className="absolute bottom-7 text-center leading-[5rem] w-2/5 text-white text-5xl font-bold font-mono">
+            HBTU INVENTORY MANAGEMENT
+          </h1>
         </div>
         <div className="w-1/2 p-8" style={{}}>
-          <div className="flex  justify-center ">
-            <Image className="ml-6 mt-2" src={HBTUlogo} width="100"></Image>
+          <div className="flex justify-center ">
+            <Image
+              className="mx-auto mt-2"
+              src={HBTUlogo}
+              width="100"
+              alt="HBTU"
+            ></Image>
           </div>
-          <h1 className=" mb-6 text-center text-xl">
-            HBTU Inventory Management
-          </h1>
-          <div className="mb-4 px-32">
+          <div className="mb-4 px-32 mt-10">
             <input
-              type="text"
-              placeholder="Username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              required
+              type="email"
+              placeholder="Enter your email address"
+              value={email}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                setIsValidEmail(validateEmail(email));
+              }}
               className="w-full px-4 py-2 border rounded-lg"
             />
+            {!isValidEmail ? (
+              <p className="text-red-500 tracking-wide font-mono">
+                Enter a valid email
+              </p>
+            ) : (
+              ""
+            )}
           </div>
-          <div className="mb-4 px-32">
+          <div className="mb-4 px-32 relative">
             <input
+              required
               type={visible ? "text" : "password"}
-              placeholder="Password"
+              placeholder="Enter your password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="w-full px-4 py-2 border rounded-lg"
             />
-            <div className="cursor-pointer">
+            <span className="cursor-pointer absolute top-2 right-[9rem]">
               {!visible ? (
                 <RemoveRedEyeIcon
                   onClick={() => setVisible(!visible)}
@@ -135,10 +159,11 @@ export default function Login() {
                   onClick={() => setVisible(!visible)}
                 ></VisibilityOffIcon>
               )}
-            </div>
+            </span>
           </div>
           <div className="px-32 mb-4 ">
             <select
+              required
               id="Branch"
               style={{
                 paddingTop: "4px",
@@ -148,8 +173,9 @@ export default function Login() {
               value={Branch}
               onChange={(e) => setBranch(e.target.value)}
             >
-              <option value="Select message Branch">Select Department</option>
-
+              <option value="" disabled>
+                Select Department
+              </option>
               {branchArray?.map((item, idx) => {
                 return (
                   <option key={item.name} value={item.name}>
@@ -160,12 +186,22 @@ export default function Login() {
             </select>
           </div>
           <div className="px-32">
-            <button
-              onClick={handleLogin}
-              className="w-full px-4 py-2 bg-blue-500 text-white rounded"
-            >
-              Login
-            </button>
+            {error || !isValidEmail ? (
+              <button
+                disabled
+                onClick={handleLogin}
+                className="w-full px-4 py-2 bg-blue-300 text-white rounded"
+              >
+                Login
+              </button>
+            ) : (
+              <button
+                onClick={handleLogin}
+                className="w-full px-4 py-2 bg-blue-500 text-white rounded"
+              >
+                Login
+              </button>
+            )}
           </div>
 
           <div className="mt-4 text-center">
