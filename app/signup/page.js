@@ -3,9 +3,9 @@ import { useState } from "react";
 import axios from "axios";
 
 const Register = () => {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [Branch, setBranch] = useState("");
+  const [branch, setBranch] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const handleRegister = async () => {
@@ -16,9 +16,9 @@ const Register = () => {
       }
 
       const response = await axios.post("http://localhost:5000/api/register", {
-        username,
+        email,
         password,
-        Branch,
+        branch,
       });
 
       console.log("Registration successful:", response.data);
@@ -40,15 +40,15 @@ const Register = () => {
             className="block text-gray-700 text-sm font-bold mb-2"
             htmlFor="username"
           >
-            Username
+            Email
           </label>
           <input
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             id="username"
-            type="text"
-            placeholder="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            type="email"
+            placeholder="Email Address"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
         </div>
         <div className="mb-4">
@@ -86,7 +86,7 @@ const Register = () => {
         <select
           id="Branch"
           className="dropdown"
-          value={Branch}
+          value={branch}
           onChange={(e) => setBranch(e.target.value)}
         >
           <option value="Select message Branch">Select Department</option>

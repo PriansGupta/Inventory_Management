@@ -28,9 +28,9 @@ app.use(cors());
 app.use(express.json());
 
 const User = mongoose.model("User", {
-  username: String,
+  email: String,
   password: String,
-  Branch: String,
+  branch: String,
 });
 
 const transporter = nodemailer.createTransport({
@@ -49,14 +49,14 @@ const otpStore = {};
 
 app.post("/api/register", async (req, res) => {
   try {
-    const { username, password, Branch } = req.body;
+    const { email, password, branch } = req.body;
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = new User({
-      username,
+      email,
       password: hashedPassword,
-      Branch,
+      branch,
     });
     await user.save();
 
@@ -69,9 +69,9 @@ app.post("/api/register", async (req, res) => {
 
 app.post("/api/login", async (req, res) => {
   try {
-    const { username, password } = req.body;
+    const { email, password } = req.body;
 
-    const user = await User.findOne({ username });
+    const user = await User.findOne({ email });
 
     if (user && (await bcrypt.compare(password, user.password))) {
       const token = jwt.sign({ userId: user._id }, "your-secret-key", {
@@ -81,7 +81,7 @@ app.post("/api/login", async (req, res) => {
     } else {
       res
         .status(401)
-        .json({ error: "Invalid credentials", message: "User Not Found" });
+        .json({ error: "Invalid credentials", message: "Invalid credentials" });
     }
   } catch (error) {
     console.error(error);
@@ -141,7 +141,7 @@ app.post("/api/verify-otp", async (req, res) => {
     return res.status(401).json({ error: "OTP has expired" });
   }
   try {
-    const user = await User.findOne({ username: email });
+    const user = await User.findOne({ email: email });
 
     if (!user) {
       return res.status(404).json({ error: "User not found" });
@@ -161,7 +161,7 @@ app.post("/api/verify-otp", async (req, res) => {
 app.post("/api/check-email", async (req, res) => {
   try {
     const { email } = req.body;
-    const user = await User.findOne({ username: email });
+    const user = await User.findOne({ email: email });
 
     if (user) {
       res.status(200).json({ exists: true, user });
