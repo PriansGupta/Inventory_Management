@@ -29,6 +29,7 @@ app.use(express.json());
 
 const User = mongoose.model("User", {
   email: String,
+  name: String,
   password: String,
   branch: String,
 });
@@ -49,12 +50,13 @@ const otpStore = {};
 
 app.post("/api/register", async (req, res) => {
   try {
-    const { email, password, branch } = req.body;
+    const { email, password, branch, name } = req.body;
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = new User({
       email,
+      name,
       password: hashedPassword,
       branch,
     });
@@ -81,7 +83,7 @@ app.post("/api/login", async (req, res) => {
       const token = jwt.sign({ userId: user._id }, "your-secret-key", {
         expiresIn: "1h",
       });
-      res.status(200).json({ token, message: "Logged in Successfully" });
+      res.status(200).json({ token, message: "Logged in Successfully", user });
     } else {
       res
         .status(401)
@@ -100,7 +102,7 @@ const users = {};
 
 app.post("/api/send-otp", async (req, res) => {
   const { email } = req.body;
-
+  console.log(email);
   if (!email) {
     return res.status(400).json({ error: "Email is required" });
   }

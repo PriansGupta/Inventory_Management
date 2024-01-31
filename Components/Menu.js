@@ -7,7 +7,7 @@ function Menu(props) {
       onClick={() => props.action()}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
-      className={`mt-2 cursor-pointer transition-all align-middle font-medium items-center tracking-wide text-xl  mx-auto flex justify-start p-4 rounded-xl ${
+      className={`mt-2 cursor-pointer transition-all align-middle font-medium items-center tracking-wide text-md mx-auto flex justify-start p-4 rounded-xl ${
         hover ? "bg-green-600 text-white" : "text-gray-500"
       }`}
     >

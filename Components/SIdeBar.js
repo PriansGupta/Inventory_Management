@@ -63,7 +63,7 @@ export default function SIdeBar() {
         <div
           onMouseEnter={() => setHover(true)}
           onMouseLeave={() => setHover(false)}
-          className={`w-[90%] transition-transform cursor-pointer mt-4 align-middle items-center font-bold tracking-wide text-xl text-green-500 mx-auto flex justify-evenly p-4 bg-green-100 rounded-2xl ${
+          className={`w-[85%] transition-transform cursor-pointer mt-3 align-middle items-center font-bold tracking-wide text-md text-green-500 mx-auto flex justify-evenly p-2 bg-green-100 rounded-2xl ${
             hover ? "scale-105 bg-green-200" : ""
           }`}
         >
@@ -74,6 +74,7 @@ export default function SIdeBar() {
           {list.map((item) => {
             return (
               <Menu
+                key={item.option}
                 icon={item.icon}
                 option={item.option}
                 action={item.action}

@@ -14,7 +14,7 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
 const branchArray = [
   { name: "Electronics Engineering" },
-  { name: "Computer Science" },
+  { name: "Computer Science Engineering" },
   { name: "Information Technology" },
   { name: "Mechanical Engineering" },
   { name: "Electrical Engineering" },
@@ -31,13 +31,16 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [Branch, setBranch] = useState("");
-  const [isLoading, setLoading] = useState(false);
+  const [isLoading, setLoading] = useState(true);
   const [visible, setVisible] = useState(false);
   const [error, setError] = useState(true);
   const [isValidEmail, setIsValidEmail] = useState(true);
 
   const route = useRouter();
   useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, [1000]);
     const token = localStorage.getItem("token");
     if (token) {
       route.push("/account");
@@ -57,8 +60,9 @@ export default function Login() {
         password,
         Branch,
       });
-      const { token } = response.data;
+      const { token, user } = response.data;
       localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(user));
       console.log("Token:", token);
       toast.success(response.data.message, {
         position: "bottom-right",

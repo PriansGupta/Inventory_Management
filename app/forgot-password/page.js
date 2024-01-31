@@ -34,6 +34,7 @@ const ForgotPassword = () => {
         }
       );
       const { exists, user } = response.data;
+      console.log(exists, user);
       setEmailExists(exists);
       if (exists) {
         localStorage.setItem("user", JSON.stringify(user));
@@ -41,7 +42,7 @@ const ForgotPassword = () => {
           const response = await axios.post(
             "http://localhost:5000/api/send-otp",
             {
-              email: JSON.parse(localStorage.getItem("user"))?.username,
+              email: user.email,
             }
           );
           if (response) console.log(response);

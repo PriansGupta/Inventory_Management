@@ -13,6 +13,8 @@ import SIdeBar from "@/Components/SIdeBar";
 function Account({ children }) {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
+  const user = JSON.parse(localStorage?.getItem("user"));
+  console.log(user);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -28,7 +30,11 @@ function Account({ children }) {
     return (
       <div className="flex h-[100vh] select-none">
         <div className="w-[25%] flex-col h-full">
-          <AvatarIcon></AvatarIcon>
+          <AvatarIcon
+            branch={user.branch}
+            email={user.email}
+            name={user.name}
+          ></AvatarIcon>
           <div className="bg-gray-100 w-full h-1"></div>
           <SIdeBar></SIdeBar>
         </div>
