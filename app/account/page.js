@@ -7,8 +7,10 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import SimpleBackdrop from "@/Components/Backdrop";
+import AvatarIcon from "@/Components/Avatar";
+import SIdeBar from "@/Components/SIdeBar";
 
-function dashboard() {
+function Account({ children }) {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
 
@@ -21,29 +23,18 @@ function dashboard() {
     }
   }, []);
 
-  const darkTheme = createTheme({
-    palette: {
-      mode: "dark",
-      primary: {
-        main: "#1976d2",
-      },
-    },
-  });
-
   if (loading) return <SimpleBackdrop open={loading}></SimpleBackdrop>;
   else
     return (
-      <ThemeProvider theme={darkTheme}>
-        <div className="flex flex-row">
-          <div className="w-1/4 h-[100vh] border-2 border-r border-black">
-            <NestedList></NestedList>
-          </div>
-          <div className="w-3/4 h-[100vh]">
-            <Navbar></Navbar>
-          </div>
+      <div className="flex h-[100vh] select-none">
+        <div className="w-[25%] flex-col h-full">
+          <AvatarIcon></AvatarIcon>
+          <div className="bg-gray-100 w-full h-1"></div>
+          <SIdeBar></SIdeBar>
         </div>
-      </ThemeProvider>
+        <div className="bg-gray-100 w-[75%] h-full">{children}</div>
+      </div>
     );
 }
 
-export default dashboard;
+export default Account;

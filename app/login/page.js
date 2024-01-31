@@ -40,7 +40,7 @@ export default function Login() {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
-      route.push("/dashboard");
+      route.push("/account");
     }
   }, []);
 
@@ -70,7 +70,7 @@ export default function Login() {
         progress: undefined,
         theme: "colored",
       });
-      route.push("/dashboard");
+      route.push("/account");
       setLoading(false);
     } catch (error) {
       toast.error(error.response.data.message, {

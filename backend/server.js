@@ -69,11 +69,15 @@ app.post("/api/register", async (req, res) => {
 
 app.post("/api/login", async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, Branch } = req.body;
 
     const user = await User.findOne({ email });
 
-    if (user && (await bcrypt.compare(password, user.password))) {
+    if (
+      user &&
+      (await bcrypt.compare(password, user.password)) &&
+      Branch === user.branch
+    ) {
       const token = jwt.sign({ userId: user._id }, "your-secret-key", {
         expiresIn: "1h",
       });
