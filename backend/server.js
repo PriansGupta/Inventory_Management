@@ -179,6 +179,40 @@ app.post("/api/check-email", async (req, res) => {
   }
 });
 
+app.post("/api/contact-us", async (req, res) => {
+  const { fromEmail, ToEmail, name, message } = req.body;
+
+  const emailContent = `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+      <div style="background-color: #f8f8f8; padding: 20px; text-align: center;">
+        <h2 style="color: #333;">${name} has a query</h2>
+      </div>
+      <div style="padding: 20px;">
+        <p><strong>Name:</strong> ${name}</p>
+        <p><strong>Email:</strong> ${fromEmail}</p>
+        <p><strong>Message:</strong> ${message}</p>
+      </div>
+      <div style="background-color: #f8f8f8; padding: 10px; text-align: center;">
+        <p style="color: #777; font-size: 12px;">Your Company Name | Address | Phone</p>
+      </div>
+    </div>
+  `;
+  const mailOptions = {
+    from: "priyanshg.jobs@gmail.com", // Your Gmail email address
+    to: ToEmail,
+    subject: "Someone has a query",
+    html: emailContent,
+  };
+
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      return res.status(500).json({ error: "Failed to send Message" });
+    }
+
+    res.json({ message: "Message sent successfully" });
+  });
+});
+
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });

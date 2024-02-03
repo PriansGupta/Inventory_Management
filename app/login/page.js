@@ -48,7 +48,7 @@ export default function Login() {
   }, []);
 
   const validateEmail = (input) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const emailRegex = /^[^\s@]+@hbtu\.ac\.in$/i;
     return emailRegex.test(input);
   };
 
@@ -131,8 +131,9 @@ export default function Login() {
               placeholder="Enter your email address"
               value={email}
               onChange={(e) => {
-                setEmail(e.target.value);
-                setIsValidEmail(validateEmail(email));
+                const newEmail = e.target.value;
+                setEmail(newEmail);
+                setIsValidEmail(validateEmail(newEmail));
               }}
               className="w-full px-4 py-2 border rounded-lg"
             />
@@ -208,9 +209,15 @@ export default function Login() {
             )}
           </div>
 
-          <div className="mt-4 text-center">
+          <div className="mt-4 text-center flex justify-center space-x-3">
             <Link className="text-blue-500" href="/forgot-password">
               Forgot Password?
+            </Link>
+            <Link className="text-blue-500" href="/contact-us">
+              Contact Us
+            </Link>
+            <Link className="text-blue-500" href="/">
+              Home
             </Link>
           </div>
         </div>
