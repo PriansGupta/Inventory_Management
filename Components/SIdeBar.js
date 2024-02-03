@@ -9,17 +9,16 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import ContactSupportIcon from "@mui/icons-material/ContactSupport";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import MessageIcon from "@mui/icons-material/Message";
-import Menu from "./menu";
+import Menu from "./Menu";
 import { useState } from "react";
 
 export default function SIdeBar() {
   const router = useRouter();
   const [isLoading, setLoading] = useState(false);
   const [hover, setHover] = useState(false);
-  function Logouthandler() {
+  function Dummy() {
     setLoading(true);
-    localStorage.removeItem("token");
-    router.push("/login");
+    console.log("Clicked");
     setLoading(false);
   }
 
@@ -27,32 +26,27 @@ export default function SIdeBar() {
     {
       option: "Alert",
       icon: <AddAlertIcon />,
-      action: Logouthandler,
+      action: Dummy,
     },
     {
       option: "Settings",
       icon: <Settings />,
-      action: Logouthandler,
+      action: Dummy,
     },
     {
       option: "Statistics",
       icon: <BarChartIcon />,
-      action: Logouthandler,
-    },
-    {
-      option: "Logout",
-      icon: <LogoutIcon />,
-      action: Logouthandler,
+      action: Dummy,
     },
     {
       option: "Contact",
       icon: <ContactSupportIcon />,
-      action: Logouthandler,
+      action: Dummy,
     },
     {
       option: "Suggestions",
       icon: <MessageIcon />,
-      action: Logouthandler,
+      action: Dummy,
     },
   ];
 

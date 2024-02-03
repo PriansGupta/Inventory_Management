@@ -34,7 +34,6 @@ const ForgotPassword = () => {
         }
       );
       const { exists, user } = response.data;
-      console.log(exists, user);
       setEmailExists(exists);
       if (exists) {
         localStorage.setItem("user", JSON.stringify(user));
@@ -79,10 +78,10 @@ const ForgotPassword = () => {
     }
     setLoading(false);
   }
-
   return (
     <div>
-      <SimpleBackdrop open={isLoading}></SimpleBackdrop>
+      {isLoading && <SimpleBackdrop open={true} />}
+      {/* <SimpleBackdrop open={isLoading}></SimpleBackdrop> */}
       <div className="container mx-auto p-8 max-w-md select-none">
         <h1 className="text-3xl mb-6 text-center">Forgot Password</h1>
         <p className="mb-4 text-center">
