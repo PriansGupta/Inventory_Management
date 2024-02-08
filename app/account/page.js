@@ -33,7 +33,7 @@ function Account({ children }) {
   if (loading) return <SimpleBackdrop open={loading}></SimpleBackdrop>;
   else
     return (
-      <div className="flex h-[100vh] select-none">
+      <div className="flex fixed w-full h-[100vh] border-2 border-red-400 select-none">
         <div className="w-[25%] flex-col h-full">
           <AvatarIcon
             branch={user.branch}

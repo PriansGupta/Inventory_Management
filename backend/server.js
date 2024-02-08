@@ -34,6 +34,7 @@ const User = mongoose.model("User", {
   branch: String,
 });
 
+
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
