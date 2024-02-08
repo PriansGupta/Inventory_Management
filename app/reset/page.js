@@ -9,7 +9,9 @@ import "react-toastify/dist/ReactToastify.css";
 const ResetPassword = () => {
   //   console.log(JSON.parse(localStorage.getItem("user")).username);
   const [email, setEmail] = useState(
-    JSON.parse(localStorage.getItem("user"))?.username
+    typeof window !== "undefined"
+      ? JSON.parse(localStorage?.getItem("user"))?.email
+      : ""
   );
   const [otp, setOTP] = useState("");
   const [password, setPassword] = useState("");

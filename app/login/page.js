@@ -14,7 +14,7 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
 const branchArray = [
   { name: "Electronics Engineering" },
-  { name: "Computer Science" },
+  { name: "Computer Science Engineering" },
   { name: "Information Technology" },
   { name: "Mechanical Engineering" },
   { name: "Electrical Engineering" },
@@ -31,21 +31,24 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [Branch, setBranch] = useState("");
-  const [isLoading, setLoading] = useState(false);
+  const [isLoading, setLoading] = useState(true);
   const [visible, setVisible] = useState(false);
   const [error, setError] = useState(true);
   const [isValidEmail, setIsValidEmail] = useState(true);
 
   const route = useRouter();
   useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, [1000]);
     const token = localStorage.getItem("token");
     if (token) {
-      route.push("/dashboard");
+      route.push("/account");
     }
   }, []);
 
   const validateEmail = (input) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const emailRegex = /^[^\s@]+@hbtu\.ac\.in$/i;
     return emailRegex.test(input);
   };
 
@@ -57,8 +60,9 @@ export default function Login() {
         password,
         Branch,
       });
-      const { token } = response.data;
+      const { token, user } = response.data;
       localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(user));
       console.log("Token:", token);
       toast.success(response.data.message, {
         position: "bottom-right",
@@ -70,7 +74,7 @@ export default function Login() {
         progress: undefined,
         theme: "colored",
       });
-      route.push("/dashboard");
+      route.push("/account");
       setLoading(false);
     } catch (error) {
       toast.error(error.response.data.message, {
@@ -127,8 +131,9 @@ export default function Login() {
               placeholder="Enter your email address"
               value={email}
               onChange={(e) => {
-                setEmail(e.target.value);
-                setIsValidEmail(validateEmail(email));
+                const newEmail = e.target.value;
+                setEmail(newEmail);
+                setIsValidEmail(validateEmail(newEmail));
               }}
               className="w-full px-4 py-2 border rounded-lg"
             />
@@ -204,9 +209,15 @@ export default function Login() {
             )}
           </div>
 
-          <div className="mt-4 text-center">
+          <div className="mt-4 text-center flex justify-center space-x-3">
             <Link className="text-blue-500" href="/forgot-password">
               Forgot Password?
+            </Link>
+            <Link className="text-blue-500" href="/contact-us">
+              Contact Us
+            </Link>
+            <Link className="text-blue-500" href="/">
+              Home
             </Link>
           </div>
         </div>

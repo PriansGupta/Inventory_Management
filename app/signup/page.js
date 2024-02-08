@@ -4,6 +4,7 @@ import axios from "axios";
 
 const Register = () => {
   const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [branch, setBranch] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -19,6 +20,7 @@ const Register = () => {
         email,
         password,
         branch,
+        name,
       });
 
       console.log("Registration successful:", response.data);
@@ -35,6 +37,22 @@ const Register = () => {
     <div className="flex items-center justify-center h-screen">
       <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
         <h1 className="text-2xl font-bold mb-4">Register</h1>
+        <div className="mb-4">
+          <label
+            className="block text-gray-700 text-sm font-bold mb-2"
+            htmlFor="name"
+          >
+            Name
+          </label>
+          <input
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="name"
+            type="text"
+            placeholder="Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+        </div>
         <div className="mb-4">
           <label
             className="block text-gray-700 text-sm font-bold mb-2"
