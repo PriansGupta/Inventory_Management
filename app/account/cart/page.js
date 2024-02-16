@@ -12,9 +12,11 @@ import Button from "@mui/material/Button";
 import SendIcon from "@mui/icons-material/Send";
 import SimpleBackdrop from "@/Components/Backdrop";
 import { useRouter } from "next/navigation";
+import axios from "axios";
 
 const Cart = () => {
-  const { cartItems, addToCart, removeFromCart } = useContext(CartContext);
+  const { cartItems, addToCart, removeFromCart, emptyCart } =
+    useContext(CartContext);
   const [isLoading, setLoading] = useState(true);
   const router = useRouter();
   // console.log(cartItems);
@@ -23,6 +25,41 @@ const Cart = () => {
       setLoading(false);
     }, 1000);
   }, []);
+
+  const checkoutHandler = async () => {
+    setLoading(true);
+    const data = `<table style="border-collapse: collapse; width: 100%;">
+    <thead>
+      <tr>
+        <th style="border: 1px solid #dddddd; background-color: #f2f2f2; text-align: left; padding: 8px;">Title</th>
+        <th style="border: 1px solid #dddddd; background-color: #f2f2f2; text-align: left; padding: 8px;">Quantity</th>
+      </tr>
+    </thead>
+    <tbody>
+      ${Object.values(cartItems)
+        .map(
+          (cartItem) => `
+        <tr>
+          <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">${cartItem.item.title}</td>
+          <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">${cartItem.count}</td>
+        </tr>
+      `
+        )
+        .join("")}
+    </tbody>
+  </table>`;
+    try {
+      const response = await axios.post("http://localhost:5000/api/checkout", {
+        data,
+      });
+      emptyCart();
+      console.log(response);
+      router.push("/account/success");
+    } catch (error) {
+      console.log(error);
+    }
+    setLoading(false);
+  };
 
   return (
     <Account>
@@ -94,7 +131,7 @@ const Cart = () => {
                 variant="contained"
                 endIcon={<SendIcon />}
                 style={{ backgroundColor: "#ff4081" }}
-                onClick={() => router.push("/account/success/")}
+                onClick={checkoutHandler}
               >
                 Checkout
               </Button>

@@ -11,8 +11,9 @@ function Success() {
   useEffect(() => {
     setTimeout(() => {
       router.push("/account");
-    }, [2000]);
+    }, [4000]);
   }, []);
+
   return (
     <Account>
       <div className="w-full h-full text-center flex-col justify-center align-middle items-center">

@@ -34,7 +34,6 @@ const User = mongoose.model("User", {
   branch: String,
 });
 
-
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
@@ -118,12 +117,10 @@ app.post("/api/send-otp", async (req, res) => {
 
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
-      return res.status(500).json({ error: "Failed to send OTP" });
+      return res.status(500).json({ error: "Failed to create an order" });
     }
 
-    users[email] = { otp, timestamp: Date.now() };
-
-    res.json({ message: "OTP sent successfully" });
+    res.json({ message: "Ordered Successfully" });
   });
 });
 
@@ -202,6 +199,25 @@ app.post("/api/contact-us", async (req, res) => {
     from: "priyanshg.jobs@gmail.com", // Your Gmail email address
     to: ToEmail,
     subject: "Someone has a query",
+    html: emailContent,
+  };
+
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      return res.status(500).json({ error: "Failed to send Message" });
+    }
+
+    res.json({ message: "Message sent successfully" });
+  });
+});
+
+app.post("/api/checkout", async (req, res) => {
+  const { data } = req.body;
+  const emailContent = data;
+  const mailOptions = {
+    from: "priyanshg.jobs@gmail.com", // Your Gmail email address
+    to: "priyanshg615@gmail.com",
+    subject: "New Order",
     html: emailContent,
   };
 
