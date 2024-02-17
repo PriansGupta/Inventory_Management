@@ -7,6 +7,7 @@ import CategoryIcon from "@mui/icons-material/Category";
 import ContactSupportIcon from "@mui/icons-material/ContactSupport";
 import MessageIcon from "@mui/icons-material/Message";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import HistoryIcon from "@mui/icons-material/History";
 import Menu from "./Menu";
 import { useState } from "react";
 
@@ -34,12 +35,12 @@ export default function SIdeBar() {
     {
       option: "Statistics",
       icon: <BarChartIcon />,
-      action: () => router.push("/account/analytics/"),
+      action: () => router.push("/account/statistics/"),
     },
     {
-      option: "Suggestions",
-      icon: <MessageIcon />,
-      action: Dummy,
+      option: "My Orders",
+      icon: <HistoryIcon />,
+      action: () => router.push("/account/orders"),
     },
     {
       option: "Contact",

@@ -15,9 +15,12 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 
 const Cart = () => {
-  const { cartItems, addToCart, removeFromCart, emptyCart } =
-    useContext(CartContext);
+  const { cartItems, addToCart, removeFromCart } = useContext(CartContext);
   const [isLoading, setLoading] = useState(true);
+  const user =
+    typeof window !== "undefined"
+      ? JSON.parse(localStorage?.getItem("user"))
+      : "";
   const router = useRouter();
   // console.log(cartItems);
   useEffect(() => {
@@ -26,10 +29,16 @@ const Cart = () => {
     }, 1000);
   }, []);
 
+  // console.log(user.email);
   const checkoutHandler = async () => {
     setLoading(true);
+    const newArray = Object.values(cartItems).map((cartItem) => {
+      return { title: cartItem.item.title, quantity: cartItem.count };
+    });
+    console.log(newArray);
     const data = `<table style="border-collapse: collapse; width: 100%;">
     <thead>
+    <p>These are the items that a user requested</p>
       <tr>
         <th style="border: 1px solid #dddddd; background-color: #f2f2f2; text-align: left; padding: 8px;">Title</th>
         <th style="border: 1px solid #dddddd; background-color: #f2f2f2; text-align: left; padding: 8px;">Quantity</th>
@@ -52,8 +61,16 @@ const Cart = () => {
       const response = await axios.post("http://localhost:5000/api/checkout", {
         data,
       });
-      emptyCart();
       console.log(response);
+      try {
+        const response = await axios.post("http://localhost:5000/api/orders", {
+          orders: newArray,
+          email: user.email,
+        });
+        console.log(response);
+      } catch (error) {
+        console.log(error);
+      }
       router.push("/account/success");
     } catch (error) {
       console.log(error);

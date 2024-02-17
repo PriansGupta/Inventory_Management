@@ -3,12 +3,15 @@ import Account from "../page";
 import SuccessAnimation from "@/Assets/Success.json";
 import Lottie from "react-lottie";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useContext } from "react";
+import CartContext from "@/Hooks/cartContext";
 
 function Success() {
   const router = useRouter();
-
+  const { emptyCart } = useContext(CartContext);
+  
   useEffect(() => {
+    emptyCart();
     setTimeout(() => {
       router.push("/account");
     }, [4000]);

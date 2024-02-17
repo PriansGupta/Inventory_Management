@@ -32,6 +32,12 @@ const User = mongoose.model("User", {
   name: String,
   password: String,
   branch: String,
+  order: [
+    {
+      title: String,
+      quantity: String,
+    },
+  ],
 });
 
 const transporter = nodemailer.createTransport({
@@ -140,7 +146,6 @@ app.post("/api/verify-otp", async (req, res) => {
   const timeElapsed = Date.now() - user.timestamp;
 
   if (timeElapsed > 5 * 60 * 1000) {
-    // OTP expires after 5 minutes
     return res.status(401).json({ error: "OTP has expired" });
   }
   try {
@@ -215,7 +220,7 @@ app.post("/api/checkout", async (req, res) => {
   const { data } = req.body;
   const emailContent = data;
   const mailOptions = {
-    from: "priyanshg.jobs@gmail.com", // Your Gmail email address
+    from: "priyanshg.jobs@gmail.com",
     to: "priyanshg615@gmail.com",
     subject: "New Order",
     html: emailContent,
@@ -228,6 +233,50 @@ app.post("/api/checkout", async (req, res) => {
 
     res.json({ message: "Message sent successfully" });
   });
+});
+
+app.post("/api/orders", async (req, res) => {
+  try {
+    const { email, orders } = req.body;
+    const user = await User.findOne({ email: email });
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    const newItems = orders.map((order) => ({
+      title: order.title,
+      quantity: order.quantity,
+    }));
+
+    const updatedUser = await User.findByIdAndUpdate(
+      user._id,
+      { $push: { order: { $each: newItems } } },
+      { new: true }
+    );
+
+    res
+      .status(200)
+      .json({ message: "Order updated successfully", user: updatedUser });
+  } catch (error) {
+    console.error("Error updating order:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+app.post("/api/get-orders", async (req, res) => {
+  try {
+    const { email } = req.body;
+    const user = await User.findOne({ email: email });
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    res.status(200).json({ orders: user.order });
+  } catch (error) {
+    console.error("Error fetching order:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 });
 
 app.listen(PORT, () => {
