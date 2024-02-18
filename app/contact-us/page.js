@@ -4,22 +4,22 @@ import HBTU_BG from "@/Assets/BG-HBTU.jpg";
 import { useEffect, useState } from "react";
 import SimpleBackdrop from "@/Components/Backdrop";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
+import { v4 as uuidv4 } from "uuid";
 
-export default function Home() {
+export default function Contact() {
   const branchArray = [
-    { name: "Electronics Engineering", email: "priyanshg615@gmail.com" },
-    { name: "Computer Science Engineering", email: "princysoni210@gmail.com" },
-    { name: "Information Technology", email: "princysoni210@gmail.com" },
-    { name: "Mechanical Engineering", email: "princysoni210@gmail.com" },
-    { name: "Electrical Engineering", email: "priyanshg615@gmail.com" },
-    { name: "Civil Engineering", email: "priyanshg615@gmail.com" },
-    { name: "Paint Technology", email: "priyanshg615@gmail.com" },
-    { name: "Chemical Engineering", email: "priyanshg615@gmail.com" },
-    { name: "Bio Chemical Engineering", email: "priyanshg615@gmail.com" },
-    { name: "Oil Technology", email: "priyanshg615@gmail.com" },
-    { name: "Leather Technology", email: "priyanshg615@gmail.com" },
-    { name: "Food Technology", email: "priyanshg615@gmail.com" },
+    { name: "Electronics Engineering", email: "200106077@hbtu.ac.in" },
+    { name: "Computer Science Engineering", email: "200106052@hbtu.ac.in" },
+    { name: "Information Technology", email: "200106052@hbtu.ac.in" },
+    { name: "Mechanical Engineering", email: "200106052@hbtu.ac.in" },
+    { name: "Electrical Engineering", email: "200106077@hbtu.ac.in" },
+    { name: "Civil Engineering", email: "200106077@hbtu.ac.in" },
+    { name: "Paint Technology", email: "200106077@hbtu.ac.in" },
+    { name: "Chemical Engineering", email: "200106077@hbtu.ac.in" },
+    { name: "Bio Chemical Engineering", email: "200106077@hbtu.ac.in" },
+    { name: "Oil Technology", email: "200106077@hbtu.ac.in" },
+    { name: "Leather Technology", email: "200106077@hbtu.ac.in" },
+    { name: "Food Technology", email: "200106077@hbtu.ac.in" },
   ];
   const [branch, setbranch] = useState("");
   const [name, setName] = useState("");
@@ -51,9 +51,23 @@ export default function Home() {
           ToEmail,
           name,
           message,
+          id: uuidv4(),
         }
       );
+
       console.log(response.data.message);
+      try {
+        const response = await axios.post("http://localhost:5000/api/alerts", {
+          fromEmail,
+          ToEmail,
+          name,
+          message,
+        });
+        console.log(response);
+      } catch (e) {
+        console.log(e);
+      }
+
       setResponseMessage(response.data.message);
     } catch (error) {
       console.log(error);

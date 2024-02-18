@@ -6,7 +6,6 @@ import Image from "next/image";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import emptyCartAnimation from "@/Assets/CartAnimation.json";
-import Success from "@/Assets/Success.json";
 import Lottie from "react-lottie";
 import Button from "@mui/material/Button";
 import SendIcon from "@mui/icons-material/Send";
@@ -22,14 +21,12 @@ const Cart = () => {
       ? JSON.parse(localStorage?.getItem("user"))
       : "";
   const router = useRouter();
-  // console.log(cartItems);
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
     }, 1000);
   }, []);
 
-  // console.log(user.email);
   const checkoutHandler = async () => {
     setLoading(true);
     const newArray = Object.values(cartItems).map((cartItem) => {

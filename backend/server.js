@@ -38,6 +38,13 @@ const User = mongoose.model("User", {
       quantity: String,
     },
   ],
+  messages: [
+    {
+      id: String,
+      from: String,
+      message: String,
+    },
+  ],
 });
 
 const transporter = nodemailer.createTransport({
@@ -273,6 +280,46 @@ app.post("/api/get-orders", async (req, res) => {
       return res.status(404).json({ error: "User not found" });
     }
     res.status(200).json({ orders: user.order });
+  } catch (error) {
+    console.error("Error fetching order:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+app.post("/api/alerts", async (req, res) => {
+  try {
+    const { fromEmail, ToEmail, name, message, id } = req.body;
+    const user = await User.findOne({ email: ToEmail });
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+  
+    const newItems = [{ id, from: fromEmail, message: message }];
+
+    const updatedUser = await User.findByIdAndUpdate(
+      user._id,
+      { $push: { messages: { $each: newItems } } },
+      { new: true }
+    );
+    res
+      .status(200)
+      .json({ message: "Messages updated successfully", user: updatedUser });
+  } catch (error) {
+    console.error("Error fetching Messages:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+app.post("/api/get-alerts", async (req, res) => {
+  try {
+    const { email } = req.body;
+    const user = await User.findOne({ email: email });
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    res.status(200).json({ messages: user.messages });
   } catch (error) {
     console.error("Error fetching order:", error);
     res.status(500).json({ error: "Internal Server Error" });

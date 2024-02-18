@@ -1,26 +1,52 @@
 import * as React from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import SimpleBackdrop from "./Backdrop";
 import AddAlertIcon from "@mui/icons-material/AddAlert";
+import MailIcon from "@mui/icons-material/Mail";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import CategoryIcon from "@mui/icons-material/Category";
 import ContactSupportIcon from "@mui/icons-material/ContactSupport";
-import MessageIcon from "@mui/icons-material/Message";
+import Badge from "@mui/material/Badge";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import HistoryIcon from "@mui/icons-material/History";
 import Menu from "./Menu";
 import { useState } from "react";
+import axios from "axios";
 
 export default function SIdeBar() {
   const router = useRouter();
   const [isLoading, setLoading] = useState(false);
+  const [x, setX] = useState([]);
   const [hover, setHover] = useState(false);
+  const user =
+    typeof window !== "undefined"
+      ? JSON.parse(localStorage?.getItem("user"))
+      : "";
+
   function Dummy() {
     setLoading(true);
     console.log("Clicked");
     setLoading(false);
   }
 
+  const getAlerts = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/get-alerts",
+        {
+          email: user.email,
+        }
+      );
+      // console.log(response.data.messages);
+      setX(response.data.messages);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  useEffect(() => {
+    getAlerts();
+  }, []);
   const list = [
     {
       option: "Inventory",
@@ -28,9 +54,13 @@ export default function SIdeBar() {
       action: () => router.push("/account/inventory/"),
     },
     {
-      option: "Alert",
-      icon: <AddAlertIcon />,
-      action: Dummy,
+      option: "Alerts",
+      icon: (
+        <Badge badgeContent={x.length} color="secondary">
+          <MailIcon />
+        </Badge>
+      ),
+      action: () => router.push("/account/alerts/"),
     },
     {
       option: "Statistics",
