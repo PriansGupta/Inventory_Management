@@ -3,8 +3,9 @@ import { useEffect, useState } from "react";
 import Account from "../page";
 import SimpleBackdrop from "@/Components/Backdrop";
 import Lottie from "react-lottie";
-import NoHistory from "@/Assets/NoHistory.json";
+import NoMessages from "@/Assets/NoMessages.json";
 import axios from "axios";
+import RefreshIcon from "@mui/icons-material/Refresh";
 
 function Orders() {
   const [isLoading, setLoading] = useState(true);
@@ -40,16 +41,27 @@ function Orders() {
       <SimpleBackdrop open={isLoading}></SimpleBackdrop>
       <div className="h-full bg-gray-100 p-4">
         <div className="h-[90%] overflow-scroll">
-          <h2 className="text-center tracking-wider font-semibold text-3xl py-2">
-            Messages
-          </h2>
+          <div className="flex justify-around items-baseline p-2">
+            <h2 className="text-center tracking-wider font-semibold text-3xl py-2">
+              Messages
+            </h2>
+            <div
+              className="cursor-pointer"
+              onClick={() => {
+                getAlerts();
+                console.log("Clicked");
+              }}
+            >
+              <RefreshIcon></RefreshIcon>
+            </div>
+          </div>
           {messages.length == 0 ? (
             <div className="text-center mt-6">
               <Lottie
                 options={{
                   loop: true,
                   autoplay: true,
-                  animationData: NoHistory,
+                  animationData: NoMessages,
                 }}
                 height={300}
                 width={300}
@@ -57,13 +69,24 @@ function Orders() {
             </div>
           ) : (
             <ul>
-              {messages.map((msg, index) => (
-                <li key={index} className="border-b p-4">
-                  <h3 className="text-lg font-semibold">From:{msg.from}</h3>
-                  <p>Message: {msg.message}</p>
-                  {/* Add other details if needed */}
-                </li>
-              ))}
+              {messages
+                .slice()
+                .reverse()
+                .map((msg, index) => (
+                  <li
+                    key={index}
+                    className="border-b mb-1 bg-white w-[90%] mx-auto p-4 shadow-md cursor-pointer hover:scale-105 transition-all duration-300 ease-in-out"
+                  >
+                    <div className="flex justify-between">
+                      <h3 className="text-lg font-semibold">
+                        From : {msg.from}
+                      </h3>
+                      <h3 className="text-md font-bold">{msg.timestamp}</h3>
+                    </div>
+                    <p>Message : {msg.message}</p>
+                    {/* Add other details if needed */}
+                  </li>
+                ))}
             </ul>
           )}
         </div>

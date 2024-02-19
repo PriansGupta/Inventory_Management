@@ -4,7 +4,6 @@ import HBTU_BG from "@/Assets/BG-HBTU.jpg";
 import { useEffect, useState } from "react";
 import SimpleBackdrop from "@/Components/Backdrop";
 import axios from "axios";
-import { v4 as uuidv4 } from "uuid";
 
 export default function Contact() {
   const branchArray = [
@@ -44,6 +43,9 @@ export default function Contact() {
   const MessageHandler = async () => {
     setLoading(true);
     try {
+      const currentDate = new Date();
+      const formattedDate = currentDate.toLocaleString();
+      console.log(typeof formattedDate);
       const response = await axios.post(
         "http://localhost:5000/api/contact-us",
         {
@@ -51,7 +53,6 @@ export default function Contact() {
           ToEmail,
           name,
           message,
-          id: uuidv4(),
         }
       );
 
@@ -62,6 +63,7 @@ export default function Contact() {
           ToEmail,
           name,
           message,
+          timestamp: formattedDate,
         });
         console.log(response);
       } catch (e) {

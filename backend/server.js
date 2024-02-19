@@ -40,9 +40,9 @@ const User = mongoose.model("User", {
   ],
   messages: [
     {
-      id: String,
       from: String,
       message: String,
+      timestamp: String,
     },
   ],
 });
@@ -288,14 +288,16 @@ app.post("/api/get-orders", async (req, res) => {
 
 app.post("/api/alerts", async (req, res) => {
   try {
-    const { fromEmail, ToEmail, name, message, id } = req.body;
+    const { fromEmail, ToEmail, name, message, timestamp } = req.body;
     const user = await User.findOne({ email: ToEmail });
-
+    console.log(timestamp);
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
-  
-    const newItems = [{ id, from: fromEmail, message: message }];
+
+    const newItems = [
+      { from: fromEmail, message: message, timestamp: timestamp },
+    ];
 
     const updatedUser = await User.findByIdAndUpdate(
       user._id,
