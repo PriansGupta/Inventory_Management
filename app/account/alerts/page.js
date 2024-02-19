@@ -23,7 +23,6 @@ function Orders() {
           email: user.email,
         }
       );
-      console.log(response.data.messages);
       setMessages(response.data.messages);
     } catch (e) {
       console.log(e);
@@ -35,7 +34,6 @@ function Orders() {
     setLoading(false);
   }, []);
 
-  console.log(messages);
   return (
     <Account>
       <SimpleBackdrop open={isLoading}></SimpleBackdrop>
@@ -43,7 +41,7 @@ function Orders() {
         <div className="h-[90%] overflow-scroll">
           <div className="flex justify-around items-baseline p-2">
             <h2 className="text-center tracking-wider font-semibold text-3xl py-2">
-              Messages
+              Messages({messages.length})
             </h2>
             <div
               className="cursor-pointer"
@@ -84,7 +82,6 @@ function Orders() {
                       <h3 className="text-md font-bold">{msg.timestamp}</h3>
                     </div>
                     <p>Message : {msg.message}</p>
-                    {/* Add other details if needed */}
                   </li>
                 ))}
             </ul>

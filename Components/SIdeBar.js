@@ -17,18 +17,12 @@ import axios from "axios";
 export default function SIdeBar() {
   const router = useRouter();
   const [isLoading, setLoading] = useState(false);
-  const [x, setX] = useState([]);
+  const [messages, setMessages] = useState([]);
   const [hover, setHover] = useState(false);
   const user =
     typeof window !== "undefined"
       ? JSON.parse(localStorage?.getItem("user"))
       : "";
-
-  function Dummy() {
-    setLoading(true);
-    console.log("Clicked");
-    setLoading(false);
-  }
 
   const getAlerts = async () => {
     try {
@@ -38,15 +32,16 @@ export default function SIdeBar() {
           email: user.email,
         }
       );
-      // console.log(response.data.messages);
-      setX(response.data.messages);
+      setMessages(response.data.messages);
     } catch (e) {
       console.log(e);
     }
   };
+
   useEffect(() => {
     getAlerts();
   }, []);
+
   const list = [
     {
       option: "Inventory",
@@ -56,7 +51,7 @@ export default function SIdeBar() {
     {
       option: "Alerts",
       icon: (
-        <Badge badgeContent={x.length} color="secondary">
+        <Badge badgeContent={messages.length} color="secondary">
           <MailIcon />
         </Badge>
       ),

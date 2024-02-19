@@ -321,7 +321,7 @@ app.post("/api/get-alerts", async (req, res) => {
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
-    res.status(200).json({ messages: user.messages });
+    res.status(200).json({ messages: user.messages, princy: "Hello" });
   } catch (error) {
     console.error("Error fetching order:", error);
     res.status(500).json({ error: "Internal Server Error" });
