@@ -1,6 +1,5 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import Account from "../page";
 import SimpleBackdrop from "@/Components/Backdrop";
 import Lottie from "react-lottie";
@@ -12,7 +11,6 @@ function Orders() {
   const [isLoading, setLoading] = useState(true);
   const [messages, setMessages] = useState([]);
   const [isRotate, setRotate] = useState(false);
-  const router = useRouter();
   const user =
     typeof window !== "undefined"
       ? JSON.parse(localStorage?.getItem("user"))
@@ -36,12 +34,12 @@ function Orders() {
       setRotate(false);
     }, 1000);
   };
-  // router.refresh();
+
   useEffect(() => {
     getAlerts();
     setLoading(false);
   }, []);
-  // console.log(messages);
+
   return (
     <Account>
       <SimpleBackdrop open={isLoading}></SimpleBackdrop>
@@ -79,9 +77,6 @@ function Orders() {
                 .reverse()
                 .map((msg, index) => (
                   <li
-                    onClick={() => {
-                      router.push(`/account/alerts/${msg._id}`);
-                    }}
                     key={index}
                     className="border-b mb-1 bg-white w-[90%] mx-auto p-4 shadow-md cursor-pointer hover:scale-105 transition-all duration-300 ease-in-out"
                   >
