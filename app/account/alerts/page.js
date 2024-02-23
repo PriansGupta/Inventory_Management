@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import Account from "../page";
 import SimpleBackdrop from "@/Components/Backdrop";
 import Lottie from "react-lottie";
@@ -10,12 +11,15 @@ import RefreshIcon from "@mui/icons-material/Refresh";
 function Orders() {
   const [isLoading, setLoading] = useState(true);
   const [messages, setMessages] = useState([]);
+  const [isRotate, setRotate] = useState(false);
+  const router = useRouter();
   const user =
     typeof window !== "undefined"
       ? JSON.parse(localStorage?.getItem("user"))
       : "";
 
   const getAlerts = async () => {
+    setRotate(true);
     try {
       const response = await axios.post(
         "http://localhost:5000/api/get-alerts",
@@ -27,13 +31,17 @@ function Orders() {
     } catch (e) {
       console.log(e);
     }
-  };
 
+    setTimeout(() => {
+      setRotate(false);
+    }, 1000);
+  };
+  // router.refresh();
   useEffect(() => {
     getAlerts();
     setLoading(false);
   }, []);
-
+  // console.log(messages);
   return (
     <Account>
       <SimpleBackdrop open={isLoading}></SimpleBackdrop>
@@ -44,11 +52,10 @@ function Orders() {
               Messages({messages.length})
             </h2>
             <div
-              className="cursor-pointer"
-              onClick={() => {
-                getAlerts();
-                console.log("Clicked");
-              }}
+              className={`cursor-pointer flex justify-center items-center ${
+                isRotate ? "animate-spin infinite" : ""
+              }`}
+              onClick={getAlerts}
             >
               <RefreshIcon></RefreshIcon>
             </div>
@@ -72,6 +79,9 @@ function Orders() {
                 .reverse()
                 .map((msg, index) => (
                   <li
+                    onClick={() => {
+                      router.push(`/account/alerts/${msg._id}`);
+                    }}
                     key={index}
                     className="border-b mb-1 bg-white w-[90%] mx-auto p-4 shadow-md cursor-pointer hover:scale-105 transition-all duration-300 ease-in-out"
                   >
