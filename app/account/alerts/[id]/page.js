@@ -44,10 +44,6 @@ function SingleMessage() {
             <span className="font-bold text-gray-800">Timestamp:</span>{" "}
             {messageData.timestamp}
           </p>
-          <p className="text-gray-700 text-base mt-2">
-            <span className="font-bold text-gray-800">Message ID:</span>{" "}
-            {messageData._id}
-          </p>
         </div>
       </div>
     </Account>
