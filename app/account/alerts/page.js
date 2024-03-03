@@ -1,15 +1,18 @@
 "use client";
-import { useEffect, useState } from "react";
 import Account from "../page";
+import { useEffect, useState } from "react";
 import SimpleBackdrop from "@/Components/Backdrop";
-import Lottie from "react-lottie";
-import NoMessages from "@/Assets/NoMessages.json";
 import axios from "axios";
 import RefreshIcon from "@mui/icons-material/Refresh";
+import Messages from "@/Components/Messages";
 
-function Orders() {
+function Alerts() {
   const [isLoading, setLoading] = useState(true);
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState(
+    typeof window !== "undefined"
+      ? JSON.parse(localStorage?.getItem("messages"))
+      : []
+  );
   const [isRotate, setRotate] = useState(false);
   const user =
     typeof window !== "undefined"
@@ -26,18 +29,20 @@ function Orders() {
         }
       );
       setMessages(response.data.messages);
+      localStorage.setItem("messages", JSON.stringify(response.data.messages));
     } catch (e) {
       console.log(e);
     }
-
+    setLoading(false);
     setTimeout(() => {
       setRotate(false);
     }, 1000);
   };
 
   useEffect(() => {
-    getAlerts();
     setLoading(false);
+    if (messages.length > 0) return;
+    getAlerts();
   }, []);
 
   return (
@@ -58,43 +63,11 @@ function Orders() {
               <RefreshIcon></RefreshIcon>
             </div>
           </div>
-          {messages.length == 0 ? (
-            <div className="text-center mt-6">
-              <Lottie
-                options={{
-                  loop: true,
-                  autoplay: true,
-                  animationData: NoMessages,
-                }}
-                height={300}
-                width={300}
-              />
-            </div>
-          ) : (
-            <ul>
-              {messages
-                .slice()
-                .reverse()
-                .map((msg, index) => (
-                  <li
-                    key={index}
-                    className="border-b mb-1 bg-white w-[90%] mx-auto p-4 shadow-md cursor-pointer hover:scale-105 transition-all duration-300 ease-in-out"
-                  >
-                    <div className="flex justify-between">
-                      <h3 className="text-lg font-semibold">
-                        From : {msg.from}
-                      </h3>
-                      <h3 className="text-md font-bold">{msg.timestamp}</h3>
-                    </div>
-                    <p>Message : {msg.message}</p>
-                  </li>
-                ))}
-            </ul>
-          )}
+          {messages.length > 0 && <Messages messages={messages}></Messages>}
         </div>
       </div>
     </Account>
   );
 }
 
-export default Orders;
+export default Alerts;
