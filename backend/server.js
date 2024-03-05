@@ -50,9 +50,11 @@ const User = mongoose.model("User", {
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
-    user: "priyanshg.jobs@gmail.com",
-    pass: "edsj elqa tbyd ffto",
+    user: "priyanshgupta.org@gmail.com",
+    pass: "qjkz gohj cljs goto",
   },
+  secure: false, // Disable secure connection
+  port: 587,
 });
 
 const generateOTP = () => {
@@ -122,7 +124,7 @@ app.post("/api/send-otp", async (req, res) => {
   const otp = generateOTP();
 
   const mailOptions = {
-    from: "priyanshg.jobs@gmail.com", // Your Gmail email address
+    from: "priyanshgupta.org@gmail.com", // Your Gmail email address
     to: email,
     subject: "OTP Verification",
     text: `Your OTP is: ${otp}`,
@@ -191,7 +193,7 @@ app.post("/api/check-email", async (req, res) => {
 
 app.post("/api/contact-us", async (req, res) => {
   const { fromEmail, ToEmail, name, message } = req.body;
-
+  // console.log(req.body);
   const emailContent = `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
       <div style="background-color: #f8f8f8; padding: 20px; text-align: center;">
@@ -208,7 +210,7 @@ app.post("/api/contact-us", async (req, res) => {
     </div>
   `;
   const mailOptions = {
-    from: "priyanshg.jobs@gmail.com", // Your Gmail email address
+    from: "priyanshgupta.org@gmail.com", // Your Gmail email address
     to: ToEmail,
     subject: "Someone has a query",
     html: emailContent,
@@ -216,6 +218,7 @@ app.post("/api/contact-us", async (req, res) => {
 
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
+      // console.log(error);
       return res.status(500).json({ error: "Failed to send Message" });
     }
 
@@ -227,7 +230,7 @@ app.post("/api/checkout", async (req, res) => {
   const { data } = req.body;
   const emailContent = data;
   const mailOptions = {
-    from: "priyanshg.jobs@gmail.com",
+    from: "priyanshgupta.org@gmail.com",
     to: "priyanshg615@gmail.com",
     subject: "New Order",
     html: emailContent,

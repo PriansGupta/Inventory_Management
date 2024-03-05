@@ -14,6 +14,7 @@ function Alerts() {
       : []
   );
   const [isRotate, setRotate] = useState(false);
+  // console.log(messages);
   const user =
     typeof window !== "undefined"
       ? JSON.parse(localStorage?.getItem("user"))
@@ -63,7 +64,7 @@ function Alerts() {
               <RefreshIcon></RefreshIcon>
             </div>
           </div>
-          {messages.length > 0 && <Messages messages={messages}></Messages>}
+          {<Messages messages={messages}></Messages>}
         </div>
       </div>
     </Account>
