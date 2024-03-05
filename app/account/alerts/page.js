@@ -53,7 +53,7 @@ function Alerts() {
         <div className="h-[90%] overflow-scroll">
           <div className="flex justify-around items-baseline p-2">
             <h2 className="text-center tracking-wider font-semibold text-3xl py-2">
-              Messages({messages.length})
+              Messages({messages?.length})
             </h2>
             <div
               className={`cursor-pointer flex justify-center items-center ${

@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 function Messages({ messages }) {
   // console.log(messages);
   const router = useRouter();
-  if (messages.length === 0)
+  if (messages?.length === 0)
     return (
       <div className="text-center mt-6">
         <Lottie
@@ -22,8 +22,7 @@ function Messages({ messages }) {
   else
     return (
       <ul>
-        {messages
-          .slice()
+        {messages?.slice()
           .reverse()
           .map(({ from, timestamp, message, _id }, index) => (
             <li
