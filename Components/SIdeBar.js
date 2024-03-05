@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useEffect } from "react";
+import { useEffect,useContext } from "react";
 import { useRouter } from "next/navigation";
 import SimpleBackdrop from "./Backdrop";
 import AddAlertIcon from "@mui/icons-material/AddAlert";
@@ -13,8 +13,10 @@ import HistoryIcon from "@mui/icons-material/History";
 import Menu from "./Menu";
 import { useState } from "react";
 import axios from "axios";
+import CartContext from "@/Hooks/cartContext";
 
 export default function SIdeBar() {
+  const { cartItems } = useContext(CartContext);
   const router = useRouter();
   const [isLoading, setLoading] = useState(false);
   const [messages, setMessages] = useState([]);
@@ -86,7 +88,9 @@ export default function SIdeBar() {
             hover ? "scale-105 bg-green-200" : ""
           }`}
         >
-          <ShoppingCartIcon fontSize="large"></ShoppingCartIcon>
+          <Badge badgeContent={Object.values(cartItems).length} color="secondary">
+            <ShoppingCartIcon fontSize="large"></ShoppingCartIcon>
+          </Badge>
           <p>Go to Cart</p>
         </div>
         <div className="w-[90%] mt-2 mx-auto">
