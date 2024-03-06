@@ -68,12 +68,21 @@ app.post("/api/register", async (req, res) => {
     const { email, password, branch, name } = req.body;
 
     const hashedPassword = await bcrypt.hash(password, 10);
-
+    const currentDate = new Date();
+    const formattedDate = currentDate.toLocaleString();
+    const messages = [
+      {
+        from: "Admin@hbtu.ac.in",
+        message: "Welcome to HBTU Inventory",
+        timestamp: formattedDate,
+      },
+    ];
     const user = new User({
       email,
       name,
       password: hashedPassword,
       branch,
+      messages,
     });
     await user.save();
 

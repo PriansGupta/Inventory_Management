@@ -7,6 +7,7 @@ const nextConfig = {
       "unsplash.com",
       "*",
       "rukminim2.flixcart.com",
+      "cdn.pixabay.com",
     ], // Add your external domains here
   },
 };

@@ -45,6 +45,9 @@ export default function Login() {
     if (token) {
       route.push("/account");
     }
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    localStorage.removeItem("messages");
   }, []);
 
   const validateEmail = (input) => {

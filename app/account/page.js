@@ -17,7 +17,6 @@ function Account({ children }) {
 
   function Logouthandler() {
     setLoading(true);
-    localStorage.removeItem("token");
     router.push("/login");
     setLoading(false);
   }
@@ -26,6 +25,7 @@ function Account({ children }) {
     if (!token) {
       router.push("/login");
     } else {
+      localStorage.setItem("messages", JSON.stringify(user.messages));
       setLoading(false);
     }
   }, []);
