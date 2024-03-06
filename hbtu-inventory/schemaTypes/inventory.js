@@ -1,0 +1,55 @@
+export default {
+  name: 'inventory',
+  title: 'Inventory',
+  type: 'document',
+  fields: [
+    {
+      name: 'id',
+      title: 'ID',
+      type: 'string',
+      description: 'Unique identifier for the inventory item',
+      validation: (Rule) => Rule.required(),
+      options: {
+        readOnly: true,
+      },
+      // hidden: true,
+    },
+    {
+      name: 'image',
+      title: 'Image',
+      type: 'url',
+      description: 'URL of the image for the inventory item',
+      validation: (Rule) => Rule.uri({allowRelative: true}),
+    },
+    {
+      name: 'department',
+      title: 'Department',
+      type: 'string',
+      description: 'Department of the inventory item',
+      validation: (Rule) => Rule.required(),
+      options: {
+        list: [
+          {title: 'Electronics Engineering', value: 'electronics_engineering'},
+          {title: 'Computer Science Engineering', value: 'computer_science_engineering'},
+          {title: 'Information Technology', value: 'information_technology'},
+          {title: 'Mechanical Engineering', value: 'mechanical_engineering'},
+          {title: 'Electrical Engineering', value: 'electrical_engineering'},
+          {title: 'Civil Engineering', value: 'civil_engineering'},
+          {title: 'Paint Technology', value: 'paint_technology'},
+          {title: 'Chemical Engineering', value: 'chemical_engineering'},
+          {title: 'Bio Chemical Engineering', value: 'bio_chemical_engineering'},
+          {title: 'Oil Technology', value: 'oil_technology'},
+          {title: 'Leather Technology', value: 'leather_technology'},
+          {title: 'Food Technology', value: 'food_technology'},
+        ],
+      },
+    },
+    {
+      name: 'title',
+      title: 'Title',
+      type: 'string',
+      description: 'Title or name of the inventory item',
+      validation: (Rule) => Rule.required(),
+    },
+  ],
+}
