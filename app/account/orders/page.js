@@ -9,7 +9,7 @@ import Lottie from "react-lottie";
 function Orders() {
   const [orders, setOrders] = useState([]);
   const [isLoading, setLoading] = useState(true);
-  
+
   const user =
     typeof window !== "undefined"
       ? JSON.parse(localStorage?.getItem("user"))
@@ -28,10 +28,10 @@ function Orders() {
     } catch (e) {
       console.log(e);
     }
+    setLoading(false);
   };
   useEffect(() => {
     GetOrders();
-    setLoading(false);
   }, []);
 
   return (
@@ -42,7 +42,7 @@ function Orders() {
           <h2 className="text-center tracking-wider font-semibold text-3xl py-2">
             Order History
           </h2>
-          {orders.length == 0 ? (
+          {!isLoading && orders.length == 0 ? (
             <div className="text-center mt-6">
               <Lottie
                 options={{
