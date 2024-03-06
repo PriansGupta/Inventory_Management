@@ -42,7 +42,7 @@ function Alerts() {
 
   useEffect(() => {
     setLoading(false);
-    if (messages?.length > 0) return;
+    // if (messages?.length > 0) return;
     getAlerts();
   }, []);
 
