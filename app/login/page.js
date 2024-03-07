@@ -229,11 +229,12 @@ export default function Login() {
         </div>
       </div>
       <ToastContainer>
-        position="bottom-right" autoClose={5000}
+        position={"bottom-right"} autoClose={5000}
         hideProgressBar={false}
         newestOnTop={false}
         closeOnClick rtl={false}
-        pauseOnFocusLoss draggable pauseOnHover theme="light" transition:Bounce
+        pauseOnFocusLoss draggable pauseOnHover theme={"light"}
+        transition:Bounce
       </ToastContainer>
     </div>
   );

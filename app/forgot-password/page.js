@@ -87,8 +87,8 @@ const ForgotPassword = () => {
         <div className="container mx-auto p-8 max-w-md select-none">
           <h1 className="text-3xl mb-6 text-center">Forgot Password</h1>
           <p className="mb-4 text-center">
-            Enter your email address below, and we'll send you an OTP to verify
-            your email
+            Enter your email address below, and we will send you an OTP to
+            verify your email
           </p>
           <div className="mb-4">
             <input
@@ -129,11 +129,11 @@ const ForgotPassword = () => {
           )}
         </div>
         <ToastContainer>
-          position="bottom-right" autoClose={5000}
+          position={"bottom-right"} autoClose={5000}
           hideProgressBar={false}
           newestOnTop={false}
           closeOnClick rtl={false}
-          pauseOnFocusLoss draggable pauseOnHover theme="light"
+          pauseOnFocusLoss draggable pauseOnHover theme={"light"}
           transition:Bounce
         </ToastContainer>
       </div>

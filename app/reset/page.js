@@ -24,9 +24,12 @@ const ResetPassword = () => {
   async function handleSendOTP() {
     setLoading(true);
     try {
-      const response = await axios.post("https://inventory-backend-latest.vercel.app/api/send-otp", {
-        email,
-      });
+      const response = await axios.post(
+        "https://inventory-backend-latest.vercel.app/api/send-otp",
+        {
+          email,
+        }
+      );
       if (response) console.log(response);
     } catch (error) {
       console.error(error);
@@ -157,11 +160,11 @@ const ResetPassword = () => {
           )}
         </div>
         <ToastContainer>
-          position="bottom-right" autoClose={5000}
+          position={"bottom-right"} autoClose={5000}
           hideProgressBar={false}
           newestOnTop={false}
           closeOnClick rtl={false}
-          pauseOnFocusLoss draggable pauseOnHover theme="light"
+          pauseOnFocusLoss draggable pauseOnHover theme={"light"}
           transition:Bounce
         </ToastContainer>
       </div>
