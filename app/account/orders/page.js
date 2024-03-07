@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import Account from "../page";
 import axios from "axios";
 import SimpleBackdrop from "@/Components/Backdrop";
-import NoHistory from "@/Assets/NoHistory.json";
+import NoHistory from "../../../Assets/noHistory.json";
 import Lottie from "react-lottie";
 
 function Orders() {
