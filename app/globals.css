@@ -58,3 +58,31 @@
 .custom-card:hover {
   transform: scale(1.05);
 }
+
+/* Your styles.css (or any other CSS file) */
+
+.absolute-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s;
+  height: fit-content;
+}
+
+.absolute-container:hover {
+  opacity: 1;
+}
+
+.upload-message {
+  color: white;
+  font-weight: bold;
+  font-size: 0.8rem;
+  background-color: black;
+  padding: 0.1rem;
+  border-radius: 0.25rem;
+}

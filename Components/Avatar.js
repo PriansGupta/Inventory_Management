@@ -23,10 +23,8 @@ function AvatarIcon(props) {
           className="hidden"
           onChange={handleFileChange}
         />
-        <div className="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center opacity-0 transition-opacity duration-300 hover:opacity-100">
-          <p className="text-white font-bold text-sm bg-black p-1 rounded-md">
-            Upload Photo
-          </p>
+        <div className="absolute-container">
+          <p className="upload-message">Upload Photo</p>
         </div>
       </label>
       <div className="flex-col w-[60%]">
