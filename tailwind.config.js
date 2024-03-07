@@ -12,6 +12,9 @@ module.exports = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
+      backgroundColor: {
+        "green-600": "#2c6e49", // Change the hex code to your desired color
+      },
     },
   },
   plugins: [],
