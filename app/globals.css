@@ -55,3 +55,6 @@
   background-color: #d1fae5; /* Equivalent to bg-green-100 in Tailwind */
   border-radius: 1rem; /* Equivalent to rounded-2xl in Tailwind */
 }
+.custom-card:hover {
+  transform: scale(1.05);
+}
