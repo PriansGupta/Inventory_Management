@@ -30,3 +30,10 @@
 .text-white {
   color: #ffffff;
 }
+
+.bg-green-100 {
+  background-color: rgb(220 252 231);
+}
+.bg-green-200 {
+  background-color: rgb(187 247 208);
+}
