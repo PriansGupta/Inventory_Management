@@ -24,7 +24,7 @@ const ResetPassword = () => {
   async function handleSendOTP() {
     setLoading(true);
     try {
-      const response = await axios.post("http://localhost:5000/api/send-otp", {
+      const response = await axios.post("https://inventory-backend-latest.vercel.app/api/send-otp", {
         email,
       });
       if (response) console.log(response);
@@ -45,7 +45,7 @@ const ResetPassword = () => {
     setLoading(true);
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/verify-otp",
+        "https://inventory-backend-latest.vercel.app/api/verify-otp",
         {
           email,
           otp,

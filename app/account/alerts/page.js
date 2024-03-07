@@ -24,7 +24,7 @@ function Alerts() {
     setRotate(true);
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/get-alerts",
+        "https://inventory-backend-latest.vercel.app/api/get-alerts",
         {
           email: user.email,
         }

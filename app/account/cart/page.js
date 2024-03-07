@@ -55,12 +55,12 @@ const Cart = () => {
     </tbody>
   </table>`;
     try {
-      const response = await axios.post("http://localhost:5000/api/checkout", {
+      const response = await axios.post("https://inventory-backend-latest.vercel.app/api/checkout", {
         data,
       });
       console.log(response);
       try {
-        const response = await axios.post("http://localhost:5000/api/orders", {
+        const response = await axios.post("https://inventory-backend-latest.vercel.app/api/orders", {
           orders: newArray,
           email: user.email,
         });

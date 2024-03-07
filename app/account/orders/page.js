@@ -18,7 +18,7 @@ function Orders() {
   const GetOrders = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/get-orders",
+        "https://inventory-backend-latest.vercel.app/api/get-orders",
         {
           email: user.email,
         }

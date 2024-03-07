@@ -47,7 +47,7 @@ export default function Contact() {
       const formattedDate = currentDate.toLocaleString();
       console.log(typeof formattedDate);
       const response = await axios.post(
-        "http://localhost:5000/api/contact-us",
+        "https://inventory-backend-latest.vercel.app/api/contact-us",
         {
           fromEmail,
           ToEmail,
@@ -58,7 +58,7 @@ export default function Contact() {
 
       console.log(response.data.message);
       try {
-        const response = await axios.post("http://localhost:5000/api/alerts", {
+        const response = await axios.post("https://inventory-backend-latest.vercel.app/api/alerts", {
           fromEmail,
           ToEmail,
           name,

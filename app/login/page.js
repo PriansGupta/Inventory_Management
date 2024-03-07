@@ -58,11 +58,14 @@ export default function Login() {
   const handleLogin = async () => {
     setLoading(true);
     try {
-      const response = await axios.post("http://localhost:5000/api/login", {
-        email,
-        password,
-        Branch,
-      });
+      const response = await axios.post(
+        "https://inventory-backend-latest.vercel.app/api/login",
+        {
+          email,
+          password,
+          Branch,
+        }
+      );
       const { token, user } = response.data;
       localStorage.setItem("token", token);
       localStorage.setItem("user", JSON.stringify(user));

@@ -28,7 +28,7 @@ const ForgotPassword = () => {
     setLoading(true);
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/check-email",
+        "https://inventory-backend-latest.vercel.app/api/check-email",
         {
           email,
         }
@@ -39,7 +39,7 @@ const ForgotPassword = () => {
         localStorage.setItem("user", JSON.stringify(user));
         try {
           const response = await axios.post(
-            "http://localhost:5000/api/send-otp",
+            "https://inventory-backend-latest.vercel.app/api/send-otp",
             {
               email: user.email,
             }

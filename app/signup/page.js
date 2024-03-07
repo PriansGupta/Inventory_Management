@@ -16,7 +16,7 @@ const Register = () => {
         return;
       }
 
-      const response = await axios.post("http://localhost:5000/api/register", {
+      const response = await axios.post("https://inventory-backend-latest.vercel.app/api/register", {
         email,
         password,
         branch,
