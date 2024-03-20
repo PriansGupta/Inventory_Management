@@ -21,7 +21,6 @@ function Account({ children }) {
     setLoading(false);
   }
   useEffect(() => {
-    router.push("/account/statistics");
     const token = localStorage.getItem("token");
     if (!token) {
       router.push("/login");
