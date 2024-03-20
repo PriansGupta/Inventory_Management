@@ -58,7 +58,10 @@ function Orders() {
             <ul>
               {orders.map((order, index) => (
                 <li key={index} className="border-b p-4">
-                  <h3 className="text-lg font-semibold">{order.title}</h3>
+                  <div className="flex justify-between">
+                    <h3 className="text-lg font-semibold">{order.title}</h3>
+                    <h4 className="text-md font-semibold">{order.timestamp}</h4>
+                  </div>
                   <p>Quantity: {order.quantity}</p>
                   {/* Add other details if needed */}
                 </li>
