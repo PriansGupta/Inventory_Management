@@ -97,7 +97,7 @@ const InventoryData = () => {
                   <div className="flex mt-4 justify-evenly items-center text-black hover:border-white rounded-3xl border-2 border-black">
                     <div
                       onClick={() => removeFromCart(product)}
-                      className="hover:bg-gray-700 flex justify-center align-middle hover:text-white py-2 rounded-r-3xl px-1 w-1/3"
+                      className="hover:bg-gray-700 flex justify-center align-middle hover:text-white py-2 rounded-l-3xl px-1 w-1/3"
                     >
                       <RemoveIcon></RemoveIcon>
                     </div>
@@ -106,7 +106,7 @@ const InventoryData = () => {
                     </p>
                     <div
                       onClick={() => addToCart(product)}
-                      className="hover:bg-gray-700 flex justify-center align-middle hover:text-white rounded-l-3xl py-2 px-1 w-1/3"
+                      className="hover:bg-gray-700 flex justify-center align-middle hover:text-white rounded-r-3xl py-2 px-1 w-1/3"
                     >
                       <AddIcon></AddIcon>
                     </div>
