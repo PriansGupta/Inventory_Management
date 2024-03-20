@@ -96,19 +96,19 @@ const InventoryData = () => {
                 {getCountForProduct(product?.id) > 0 ? (
                   <div className="flex mt-4 justify-evenly items-center text-black hover:border-white rounded-3xl border-2 border-black">
                     <div
-                      onClick={() => addToCart(product)}
-                      className="hover:bg-gray-700 flex justify-center align-middle hover:text-white rounded-l-3xl py-2 px-1 w-1/3"
+                      onClick={() => removeFromCart(product)}
+                      className="hover:bg-gray-700 flex justify-center align-middle hover:text-white py-2 rounded-r-3xl px-1 w-1/3"
                     >
-                      <AddIcon></AddIcon>
+                      <RemoveIcon></RemoveIcon>
                     </div>
                     <p className="font-bold w-1/3 text-center">
                       {getCountForProduct(product.id)}
                     </p>
                     <div
-                      onClick={() => removeFromCart(product)}
-                      className="hover:bg-gray-700 flex justify-center align-middle hover:text-white py-2 rounded-r-3xl px-1 w-1/3"
+                      onClick={() => addToCart(product)}
+                      className="hover:bg-gray-700 flex justify-center align-middle hover:text-white rounded-l-3xl py-2 px-1 w-1/3"
                     >
-                      <RemoveIcon></RemoveIcon>
+                      <AddIcon></AddIcon>
                     </div>
                   </div>
                 ) : (
