@@ -122,7 +122,7 @@ export default function Login() {
           </h1>
         </div>
         <div className="w-1/2 p-8" style={{}}>
-          <div className="flex justify-center ">
+          <div className="flex justify-center">
             <Image
               className="mx-auto mt-2"
               src={HBTUlogo}

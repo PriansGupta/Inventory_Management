@@ -29,8 +29,14 @@ const Cart = () => {
 
   const checkoutHandler = async () => {
     setLoading(true);
+    const currentDate = new Date();
+    const formattedDate = currentDate.toLocaleString();
     const newArray = Object.values(cartItems).map((cartItem) => {
-      return { title: cartItem.item.title, quantity: cartItem.count };
+      return {
+        title: cartItem.item.title,
+        quantity: cartItem.count,
+        timestamp: formattedDate,
+      };
     });
     console.log(newArray);
     const data = `<table style="border-collapse: collapse; width: 100%;">
@@ -55,15 +61,21 @@ const Cart = () => {
     </tbody>
   </table>`;
     try {
-      const response = await axios.post("https://inventory-backend-latest.vercel.app/api/checkout", {
-        data,
-      });
+      const response = await axios.post(
+        "https://inventory-backend-latest.vercel.app/api/checkout",
+        {
+          data,
+        }
+      );
       console.log(response);
       try {
-        const response = await axios.post("https://inventory-backend-latest.vercel.app/api/orders", {
-          orders: newArray,
-          email: user.email,
-        });
+        const response = await axios.post(
+          "https://inventory-backend-latest.vercel.app/api/orders",
+          {
+            orders: newArray,
+            email: user.email,
+          }
+        );
         console.log(response);
       } catch (error) {
         console.log(error);
