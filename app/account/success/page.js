@@ -9,11 +9,11 @@ import CartContext from "@/Hooks/cartContext";
 function Success() {
   const router = useRouter();
   const { emptyCart } = useContext(CartContext);
-  
+
   useEffect(() => {
     emptyCart();
     setTimeout(() => {
-      router.push("/account");
+      router.push("/account/get-started");
     }, [4000]);
   }, []);
 
