@@ -65,7 +65,7 @@ export default function SIdeBar() {
       action: () => router.push("/account/statistics/"),
     },
     {
-      option: "My Orders",
+      option: "Orders",
       icon: <HistoryIcon />,
       action: () => router.push("/account/orders"),
     },
