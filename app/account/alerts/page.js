@@ -1,39 +1,21 @@
 "use client";
 import Account from "../page";
-import { useEffect, useState } from "react";
+import { useEffect, useContext, useState } from "react";
 import SimpleBackdrop from "@/Components/Backdrop";
 import axios from "axios";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import Messages from "@/Components/Messages";
+import AlertContext from "@/Hooks/alertContext";
 
 function Alerts() {
   const [isLoading, setLoading] = useState(true);
-  const [messages, setMessages] = useState(
-    typeof window !== "undefined"
-      ? JSON.parse(localStorage?.getItem("messages"))
-      : []
-  );
+  const { alerts, fetchAlerts } = useContext(AlertContext);
+  // console.log(alerts);
   const [isRotate, setRotate] = useState(false);
-  // console.log(messages);
-  const user =
-    typeof window !== "undefined"
-      ? JSON.parse(localStorage?.getItem("user"))
-      : "";
 
   const getAlerts = async () => {
     setRotate(true);
-    try {
-      const response = await axios.post(
-        "https://inventory-backend-latest.vercel.app/api/get-alerts",
-        {
-          email: user.email,
-        }
-      );
-      setMessages(response.data.messages);
-      localStorage.setItem("messages", JSON.stringify(response.data.messages));
-    } catch (e) {
-      console.log(e);
-    }
+    fetchAlerts();
     setLoading(false);
     setTimeout(() => {
       setRotate(false);
@@ -42,8 +24,7 @@ function Alerts() {
 
   useEffect(() => {
     setLoading(false);
-    // if (messages?.length > 0) return;
-    getAlerts();
+    fetchAlerts();
   }, []);
 
   return (
@@ -53,7 +34,7 @@ function Alerts() {
         <div className="h-[90%] overflow-scroll">
           <div className="flex justify-around items-baseline p-2">
             <h2 className="text-center tracking-wider font-semibold text-3xl py-2">
-              Messages({messages?.length})
+              Messages({alerts?.length})
             </h2>
             <div
               className={`cursor-pointer flex justify-center items-center ${
@@ -64,7 +45,7 @@ function Alerts() {
               <RefreshIcon></RefreshIcon>
             </div>
           </div>
-          {<Messages messages={messages}></Messages>}
+          {<Messages messages={alerts}></Messages>}
         </div>
       </div>
     </Account>

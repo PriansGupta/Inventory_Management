@@ -5,7 +5,6 @@ function Menu({ option, icon, action }) {
   const pathname = window.location.pathname;
   const lastPath = pathname.split("/").pop();
   const isActive = lastPath.toLowerCase() === option.toLowerCase();
-  if (isActive) console.log(lastPath, option);
   let hoverClass = "";
   if (hover || isActive)
     hoverClass =
