@@ -9,11 +9,13 @@ import SimpleBackdrop from "@/Components/Backdrop";
 import { client } from "@/utils/configSanity";
 import NoResult from "@/Components/noResult";
 import Fuse from "fuse.js";
+import { useRouter } from "next/navigation";
 
 const InventoryData = () => {
   const [products, setProducts] = useState([]);
   const [dummyProducts, setDummyProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const router = useRouter();
   const user =
     typeof window !== "undefined"
       ? JSON.parse(localStorage?.getItem("user"))
@@ -50,8 +52,8 @@ const InventoryData = () => {
     } else {
       const fuse = new Fuse(dummyProducts, {
         keys: ["title"],
-        threshold: 0.4, // Adjust the threshold value (0 to 1)
-        distance: 100, // Adjust the distance value
+        threshold: 0.4,
+        distance: 100,
         minMatchCharLength: 1,
       });
       const searchResults = fuse.search(term);
@@ -84,7 +86,8 @@ const InventoryData = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 ">
             {products?.map((product) => (
               <div
-                key={product.id}
+                onClick={() => router.push(`/account/inventory/${product._id}`)}
+                key={product._id}
                 className="bg-white p-4 rounded-md shadow-lg overflow-hidden cursor-pointer ease-in-out transition-transform transform hover:scale-105"
               >
                 <img
