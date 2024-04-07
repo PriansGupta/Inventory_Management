@@ -86,13 +86,15 @@ const InventoryData = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 ">
             {products?.map((product) => (
               <div
-                onClick={() => router.push(`/account/inventory/${product._id}`)}
                 key={product._id}
                 className="bg-white p-4 rounded-md shadow-lg overflow-hidden cursor-pointer ease-in-out transition-transform transform hover:scale-105"
               >
                 <img
                   src={product.image}
                   alt={product.title}
+                  onClick={() =>
+                    router.push(`/account/inventory/${product._id}`)
+                  }
                   className="w-full h-32 object-cover mb-4 ease-in-out transition-transform transform rounded-md hover:scale-110"
                 />
                 <h3 className="text-lg font-semibold mb-2">{product.title}</h3>
