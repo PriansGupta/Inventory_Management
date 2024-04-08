@@ -58,7 +58,7 @@ function ItemDetail() {
           </p>
           <p className="text-gray-700 text-base mt-2">
             <span className="font-bold text-gray-800">Available Quantity:</span>{" "}
-            {2}
+            {messageData.quantity}
           </p>
         </div>
       </div>
@@ -66,5 +66,4 @@ function ItemDetail() {
   );
 }
 
- 
 export default ItemDetail;
