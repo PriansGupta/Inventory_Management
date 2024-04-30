@@ -1,8 +1,7 @@
 import * as React from "react";
-import { useEffect, useContext } from "react";
+import { useContext } from "react";
 import { useRouter } from "next/navigation";
 import SimpleBackdrop from "./Backdrop";
-import AddAlertIcon from "@mui/icons-material/AddAlert";
 import MailIcon from "@mui/icons-material/Mail";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import CategoryIcon from "@mui/icons-material/Category";
@@ -12,37 +11,15 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import HistoryIcon from "@mui/icons-material/History";
 import Menu from "./Menu";
 import { useState } from "react";
-import axios from "axios";
 import CartContext from "@/Hooks/cartContext";
+import AlertContext from "@/Hooks/alertContext";
 
 export default function SIdeBar() {
   const { cartItems } = useContext(CartContext);
+  const { alerts } = useContext(AlertContext);
   const router = useRouter();
   const [isLoading, setLoading] = useState(false);
-  const [messages, setMessages] = useState([]);
   const [hover, setHover] = useState(false);
-  const user =
-    typeof window !== "undefined"
-      ? JSON.parse(localStorage?.getItem("user"))
-      : "";
-
-  const getAlerts = async () => {
-    try {
-      const response = await axios.post(
-        "https://inventory-backend-latest.vercel.app/api/get-alerts",
-        {
-          email: user.email,
-        }
-      );
-      setMessages(response.data.messages);
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  useEffect(() => {
-    getAlerts();
-  }, []);
 
   const list = [
     {
@@ -53,7 +30,7 @@ export default function SIdeBar() {
     {
       option: "Alerts",
       icon: (
-        <Badge badgeContent={messages.length} color="secondary">
+        <Badge badgeContent={alerts.length} color="secondary">
           <MailIcon />
         </Badge>
       ),
@@ -65,7 +42,7 @@ export default function SIdeBar() {
       action: () => router.push("/account/statistics/"),
     },
     {
-      option: "My Orders",
+      option: "Orders",
       icon: <HistoryIcon />,
       action: () => router.push("/account/orders"),
     },

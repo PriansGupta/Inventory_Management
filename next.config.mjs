@@ -8,6 +8,7 @@ const nextConfig = {
       "*",
       "rukminim2.flixcart.com",
       "cdn.pixabay.com",
+      "www.jedrasiak.eu",
     ], // Add your external domains here
   },
 };

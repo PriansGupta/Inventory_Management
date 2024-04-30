@@ -51,5 +51,12 @@ export default {
       description: 'Title or name of the inventory item',
       validation: (Rule) => Rule.required(),
     },
+    {
+      name: 'quantity',
+      title: 'Quantity',
+      type: 'number',
+      description: 'Quantity of the inventory item',
+      validation: (Rule) => Rule.required().positive(),
+    },
   ],
 }

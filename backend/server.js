@@ -5,6 +5,8 @@ const jwt = require("jsonwebtoken");
 const cors = require("cors");
 const nodemailer = require("nodemailer");
 // const randomize = require("randomatic");
+const fs = require("fs");
+const pdfkit = require("pdfkit");
 
 const app = express();
 const PORT = 5000;
@@ -61,7 +63,31 @@ const generateOTP = () => {
   const otp = Math.floor(100000 + Math.random() * 900000);
   return otp.toString();
 };
-const otpStore = {};
+
+const generatePDF = (data) => {
+  const doc = new pdfkit();
+  doc.pipe(fs.createWriteStream("orderDetails.pdf"));
+
+  // Header
+  doc.fontSize(24).text("HBTU Kanpur", { align: "center" }).moveDown(0.5);
+  doc.fontSize(18).text("Ordered Items", { align: "center" }).moveDown(1);
+
+  // Table headers
+  doc.font("Helvetica-Bold").fontSize(12).text("Title", 50, doc.y).moveUp(0.5);
+  doc.text("Quantity", 200, doc.y).moveUp(0.5);
+  doc.text("Timestamp", 350, doc.y).moveUp(0.5);
+  doc.moveDown();
+
+  // Table data
+  data.forEach((item) => {
+    doc.font("Helvetica").fontSize(10).text(item.title, 50, doc.y).moveUp(0.5);
+    doc.text(item.quantity.toString(), 240, doc.y).moveUp(0.5);
+    doc.text(item.timestamp, 390, doc.y).moveUp(0.5);
+    doc.moveDown();
+  });
+
+  doc.end();
+};
 
 app.post("/api/register", async (req, res) => {
   try {
@@ -237,14 +263,20 @@ app.post("/api/contact-us", async (req, res) => {
 
 app.post("/api/checkout", async (req, res) => {
   const { data } = req.body;
-  const emailContent = data;
+  generatePDF(data);
   const mailOptions = {
     from: "priyanshgupta.org@gmail.com",
     to: "priyanshg615@gmail.com",
     subject: "New Order",
-    html: emailContent,
+    text: "Please find the attached PDF for order details.",
+    attachments: [
+      {
+        filename: "orderDetails.pdf",
+        path: "orderDetails.pdf",
+        contentType: "application/pdf",
+      },
+    ],
   };
-
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
       return res.status(500).json({ error: "Failed to send Message" });
