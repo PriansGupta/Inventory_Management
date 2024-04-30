@@ -25,7 +25,7 @@ function Statistics({ children }) {
     <Account>
       <SimpleBackdrop open={isLoading}></SimpleBackdrop>
       <div className="flex">
-        <div className="w-1/5 flex-col self-center">
+        {/* <div className="w-1/5 flex-col self-center">
           <Menu
             option="Orders-Stats"
             icon={<BarChartRounded></BarChartRounded>}
@@ -47,7 +47,7 @@ function Statistics({ children }) {
               router.push("/account/statistics/miscell");
             }}
           ></Menu>
-        </div>
+        </div> */}
         <div className="w-4/5">{children}</div>
       </div>
     </Account>
